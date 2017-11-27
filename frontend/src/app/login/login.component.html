@@ -1,3 +1,13 @@
-<p>
-  login works!
-</p>
+<div class="login-form">
+  <h1>Форма входа</h1>
+  <form action="" class="layout-column" (submit)="Login()">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Логин" [(ngModel)]="login" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Пароль" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <!-- <button>Войти</button> -->
+    <button mat-raised-button class="mat-primary">Войти</button>
+  </form>
+</div>

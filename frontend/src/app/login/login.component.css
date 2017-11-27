@@ -1,0 +1,16 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 auto;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    background-color: #cfd8dc;
+    border: 1px solid #546e7a;
+    padding: 8px 16px;
+    box-shadow: 1px 1px 4px 1px #37474f;
+}

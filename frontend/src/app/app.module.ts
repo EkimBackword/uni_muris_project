@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
@@ -14,6 +15,8 @@ import { UserService } from '../services/user-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MaterialModule } from './material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,9 +31,13 @@ import { CommonModule } from '@angular/common';
 ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
     CommonModule,
     HttpClientModule,
-    AppRoutingRoutes
+    AppRoutingRoutes,
+    MaterialModule,
+    ReactiveFormsModule
   ],
   providers: [
     UserService,
