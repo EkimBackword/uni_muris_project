@@ -25,4 +25,12 @@ export class UserService {
         }
     }
 
+    public async LogIn(login, password) {
+        try {
+            this.CurrentUser = await this.http.post<IUser>('/login', { login, password }).toPromise();
+            return this.CurrentUser;
+        } catch (e) {
+            throw e;
+        }
+    }
 }

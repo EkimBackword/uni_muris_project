@@ -3,6 +3,7 @@ export interface IUser {
     FIO: string;
     Role: string;
     Group?: number;
+    StartYear?: number;
 }
 
 export enum UserRoles {
