@@ -1,7 +1,8 @@
 export interface IUser {
+    ID: number;
     Login: string;
     FIO: string;
-    Role: string;
+    Role: UserRoles;
     Group?: number;
     StartYear?: number;
 }

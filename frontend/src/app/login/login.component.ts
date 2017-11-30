@@ -20,6 +20,24 @@ export class LoginComponent implements OnInit {
   async Login() {
     try {
       await this.userService.LogIn(this.login, this.password);
+      // this.router.navigate(['/main']);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async logout() {
+    try {
+      await this.userService.LogOut();
+      this.router.navigate(['/main']);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async test() {
+    try {
+      await this.userService.Test();
       this.router.navigate(['/main']);
     } catch (e) {
       console.log(e);

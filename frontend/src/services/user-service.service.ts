@@ -25,10 +25,26 @@ export class UserService {
         }
     }
 
-    public async LogIn(login, password) {
+    public async LogIn(Login, Password) {
         try {
-            this.CurrentUser = await this.http.post<IUser>('/login', { login, password }).toPromise();
+            this.CurrentUser = await this.http.post<IUser>('http://localhost:35123/user/login', { Login, Password }).toPromise();
             return this.CurrentUser;
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async LogOut() {
+        try {
+            return await this.http.get('http://localhost:35123/user/logout').toPromise();
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async Test() {
+        try {
+            return await this.http.get('http://localhost:35123/user/test').toPromise();
         } catch (e) {
             throw e;
         }
