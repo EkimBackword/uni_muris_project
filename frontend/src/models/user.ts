@@ -12,3 +12,10 @@ export enum UserRoles {
     student = 'student',
     teacher = 'teacher'
 }
+
+export const UserRolesDesc = {
+    admin: 'Администратор',
+    student: 'Студент',
+    teacher: 'Преподаватель',
+};
+

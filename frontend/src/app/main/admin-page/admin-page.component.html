@@ -1,0 +1,59 @@
+<div class="admin layout-row flex">
+
+<!-- admin__table -->
+  <div class="admin__table flex-70">
+    <mat-table #table [dataSource]="dataSource">
+
+      <!-- Login Column -->
+      <ng-container matColumnDef="Login">
+        <mat-header-cell *matHeaderCellDef> Логин </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Login}} </mat-cell>
+      </ng-container>
+  
+      <!-- FIO Column -->
+      <ng-container matColumnDef="FIO">
+        <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.FIO}} </mat-cell>
+      </ng-container>
+  
+      <!-- Role Column -->
+      <ng-container matColumnDef="Role">
+        <mat-header-cell *matHeaderCellDef> Роль </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{userRolesDesc[element.Role]}} </mat-cell>
+      </ng-container>
+  
+      <!-- Group Column -->
+      <ng-container matColumnDef="Group">
+        <mat-header-cell *matHeaderCellDef> Группа (только для студентов) </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Group}} </mat-cell>
+      </ng-container>
+
+      <!-- StartYear Column -->
+      <ng-container matColumnDef="StartYear">
+        <mat-header-cell *matHeaderCellDef> Год поступления (только для студентов) </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.StartYear}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+  </div>
+<!-- admin__table -->
+
+<!-- admin__add-user -->
+  <div class="admin__add-user flex-30">
+    <h3>Добавление нового пользователя:</h3>
+    <form class="layout-column layout-align-start-stretch flex">
+      <mat-form-field>
+        <input matInput placeholder="Логин" 
+        [(ngModel)]="login" 
+        [ngModelOptions]="{standalone: true}" 
+        required
+        >
+      </mat-form-field>
+    </form>
+  </div>
+<!-- admin__add-user -->
+
+</div>

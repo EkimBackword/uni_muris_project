@@ -1,33 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { MainComponent } from './main/main.component';
-import { LessonsListComponent } from './LessonsList/LessonsList.component';
-import { AdminPageComponent } from './AdminPage/AdminPage.component';
-import { NotFoundComponent } from './NotFound/NotFound.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 import { LessonComponent } from './lesson/lesson.component';
 
-import { AppRoutingRoutes } from './appRouting.routing';
-import { UserService } from '../services/user-service.service';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { MainRoutingModule } from './appRouting.routing';
+import { AppInterceptor } from './interceptor';
+import { UserService } from '../services/user-service.service';
+import { MainComponent } from './main/main.component';
+import { AdminPageComponent } from './main/admin-page/admin-page.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MainComponent,
-    LessonsListComponent,
-    AdminPageComponent,
     NotFoundComponent,
-    LessonComponent
+    LessonComponent,
+    MainComponent,
+    AdminPageComponent,
 ],
   imports: [
     BrowserModule,
@@ -35,11 +35,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     CommonModule,
     HttpClientModule,
-    AppRoutingRoutes,
+    MainRoutingModule,
     MaterialModule,
     ReactiveFormsModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true
+    },
     UserService,
   ],
   bootstrap: [AppComponent]

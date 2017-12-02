@@ -1,3 +1,38 @@
-<p>
-  main works!
-</p>
+<div class="content layout-column flex" *ngIf="profile">
+
+  <div class="content__header layout-row layout-align-space-between-center">
+    <div class="layout-row layout-align-start-center">
+      <h3>ФИО: {{profile.FIO}}</h3>
+      <h3>Роль: {{userRolesDesc[profile.Role]}}</h3>
+      <h3 *ngIf="profile.Role == 'student'">
+        Группа: {{profile.Group}}
+      </h3>
+      <h3 *ngIf="profile.Role == 'student'">
+        Год начала обучения: {{profile.StartYear}}
+      </h3>
+    </div>
+    <div>
+      <button mat-raised-button class="mat-primary" (click)="LogOut()">Выход</button>
+    </div>
+  </div>
+
+<!-- content__body -->
+  <div class="content__body layout-column flex">
+    <div class="flex">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- <button mat-raised-button class="mat-primary" routerLink="/groups">Список групп</button> -->
+  </div>
+<!-- content__body -->
+
+
+
+<!-- content__footer -->
+  <div class="content__footer layout-row layout-align-center-center">
+    <p>Сайт сделан в учебных целях</p>
+  </div>
+<!-- content__footer -->
+
+
+
+</div>

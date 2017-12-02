@@ -1,5 +1,5 @@
-import { 
-    Table, Column, Model, HasMany, CreatedAt, 
+import {
+    Table, Column, Model, HasMany, CreatedAt,
     UpdatedAt, DataType, Validate, DefaultScope, BelongsToMany
 } from 'sequelize-typescript';
 import { Request } from 'express';
@@ -43,13 +43,13 @@ export default class User extends Model<User> implements IUser {
      * @param req Объект запроса
      */
     static async checkFullModel(req: Request) {
-        req.assert('Login', "Логин не может быть пустым").notEmpty();
-        req.assert('Password', "Пароль не может быть пустым").notEmpty();
-        req.assert('FIO', "ФИО не может быть пустым").notEmpty();
-        req.assert('Role', "Роль должна быть одной из списка (Админнистратор, преподаватель или студент)").notEmpty();
+        req.assert('Login', 'Логин не может быть пустым').notEmpty();
+        req.assert('Password', 'Пароль не может быть пустым').notEmpty();
+        req.assert('FIO', 'ФИО не может быть пустым').notEmpty();
+        req.assert('Role', 'Роль должна быть одной из списка (Админнистратор, преподаватель или студент)').notEmpty();
 
-        let errors = await req.getValidationResult();
-        if(errors.isEmpty()) return null;
+        const errors = await req.getValidationResult();
+        if (errors.isEmpty()) return null;
         return errors.array({onlyFirstError: true})[0];
     }
 
@@ -58,11 +58,11 @@ export default class User extends Model<User> implements IUser {
      * @param req Объект запроса
      */
     static async checkLoginModel(req: Request) {
-        req.assert('Login', "Логин не может быть пустым").notEmpty();
-        req.assert('Password', "Пароль не может быть пустым").notEmpty();
+        req.assert('Login', 'Логин не может быть пустым').notEmpty();
+        req.assert('Password', 'Пароль не может быть пустым').notEmpty();
 
-        let errors = await req.getValidationResult();
-        if(errors.isEmpty()) return null;
+        const errors = await req.getValidationResult();
+        if (errors.isEmpty()) return null;
         return errors.array({onlyFirstError: true})[0];
     }
 }

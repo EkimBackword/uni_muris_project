@@ -15,9 +15,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     const user = await this.userService.GetUser();
-    if (user == null) {
-      await this.router.navigate(['/login']);
-    } else {
+    if (user !== null) {
       await this.router.navigate(['/main']);
     }
   }
