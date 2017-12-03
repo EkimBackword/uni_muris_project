@@ -1,8 +1,11 @@
-<div class="admin layout-row flex">
+<div class="layout-column layout-align-center-center flex" *ngIf="isLoading">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="admin layout-row flex" *ngIf="!isLoading">
 
 <!-- admin__table -->
-  <div class="admin__table flex-70">
-    <mat-table #table [dataSource]="dataSource">
+  <div class="admin__table flex-70 layout-column">
+    <mat-table #table [dataSource]="dataSource" class="layout-column flex">
 
       <!-- Login Column -->
       <ng-container matColumnDef="Login">
@@ -24,13 +27,19 @@
   
       <!-- Group Column -->
       <ng-container matColumnDef="Group">
-        <mat-header-cell *matHeaderCellDef> Группа (только для студентов) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Группа * </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.Group}} </mat-cell>
       </ng-container>
 
       <!-- StartYear Column -->
       <ng-container matColumnDef="StartYear">
-        <mat-header-cell *matHeaderCellDef> Год поступления (только для студентов) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Год поступления * </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.StartYear}} </mat-cell>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="Actions">
+        <mat-header-cell *matHeaderCellDef> Действия </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.StartYear}} </mat-cell>
       </ng-container>
   
@@ -38,20 +47,57 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
     </mat-table>
+    <span class="admin__table--help">* - только для студентов</span>
   </div>
 <!-- admin__table -->
 
 <!-- admin__add-user -->
   <div class="admin__add-user flex-30">
     <h3>Добавление нового пользователя:</h3>
-    <form class="layout-column layout-align-start-stretch flex">
+    <form class="layout-column layout-align-start-stretch flex" [formGroup]="userForm" (submit)="AddUser()">
       <mat-form-field>
         <input matInput placeholder="Логин" 
-        [(ngModel)]="login" 
-        [ngModelOptions]="{standalone: true}" 
+        formControlName="Login"
         required
         >
       </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="ФИО" 
+        formControlName="FIO"
+        required
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Пароль"
+        type="password"
+        formControlName="Password"
+        required
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Подтверждение пароль"
+        type="password"
+        formControlName="rePassword" 
+        required
+        >
+      </mat-form-field>
+      <mat-radio-group formControlName="Role" class="layout-column">
+        <mat-radio-button value="admin">Администратор</mat-radio-button>
+        <mat-radio-button value="student">Студент</mat-radio-button>
+        <mat-radio-button value="teacher">Преподаватель</mat-radio-button>
+      </mat-radio-group>
+      <mat-form-field>
+        <input matInput placeholder="Группа"
+        formControlName="Group" 
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Год начала обучения"
+        type="number"
+        formControlName="StartYear" 
+        >
+      </mat-form-field>
+      <button mat-raised-button class="mat-primary">Зарегистрировать</button>
     </form>
   </div>
 <!-- admin__add-user -->

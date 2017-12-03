@@ -31,9 +31,9 @@ export default class User extends Model<User> implements IUser {
     FIO: string;
     @Column({ type: DataType.STRING })
     Role: UserRoles;
-    @Column({ type: DataType.STRING })
+    @Column({ type: DataType.STRING, allowNull: true })
     Group?: string;
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.INTEGER, allowNull: true })
     StartYear?: number;
     @Column({ type: DataType.STRING })
     Hash: string;

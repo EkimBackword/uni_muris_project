@@ -41,4 +41,13 @@ export class UserService {
             return [];
         }
     }
+
+    public async AddUser(user: IUser) {
+        try {
+            return await this.http.post<IUser[]>(`${environment.backendUrl}/user/add`, user).toPromise();
+        } catch (e) {
+            console.warn(e);
+            return [];
+        }
+    }
 }

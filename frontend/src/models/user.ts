@@ -1,10 +1,13 @@
 export interface IUser {
-    ID: number;
+    ID?: number;
     Login: string;
     FIO: string;
     Role: UserRoles;
     Group?: number;
     StartYear?: number;
+
+    Password?: string;
+    rePassword?: string;
 }
 
 export enum UserRoles {

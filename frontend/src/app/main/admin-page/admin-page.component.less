@@ -7,26 +7,45 @@
 }
 
 .admin__table {
-    padding: 8px 16px;
+    padding: 8px;
 
     mat-table {
-        height: 100%;
-        widows: 100%;
         box-shadow: 1px 1px 4px 1px fade(@black, 75%);
 
         .mat-header-row {
             background-color: fade(@black, 75%);
             min-height: 25px;
-            
             .mat-header-cell {
                 font-size: 12px;
                 color: @white;
             }
         }
+
+        .mat-row {
+            min-height: 40px;
+            .mat-cell {
+                font-size: 14px;
+            }
+            &:hover {
+                background-color: fade(@blue, 8%);
+            }
+        }
+
+        .mat_mat-column-Login {
+            flex: 0 0 100px;
+        }
+        .mat_mat-column-FIO {
+            flex: 0 0 250px;
+        }
+    }
+
+    .admin__table--help {
+        padding: 4px 16px;
+        color: @blue;
+        font-size: 14px;
     }
 }
 
 .admin__add-user {
-    padding: 8px 16px;
-    box-shadow: -10px 0px 4px -10px fade(@black, 75%);
+    padding: 8px;
 }
