@@ -1,6 +1,7 @@
 <div class="layout-column layout-align-center-center flex" *ngIf="isLoading">
   <mat-spinner></mat-spinner>
 </div>
+
 <div class="admin layout-row flex" *ngIf="!isLoading">
 
 <!-- admin__table -->
@@ -9,20 +10,20 @@
 
       <!-- Login Column -->
       <ng-container matColumnDef="Login">
-        <mat-header-cell *matHeaderCellDef> Логин </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Login}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef class="admin__table--login"> Логин </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="admin__table--login"> {{element.Login}} </mat-cell>
       </ng-container>
   
       <!-- FIO Column -->
       <ng-container matColumnDef="FIO">
-        <mat-header-cell *matHeaderCellDef> ФИО </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.FIO}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef class="admin__table--fio"> ФИО </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="admin__table--fio"> {{element.FIO}} </mat-cell>
       </ng-container>
   
       <!-- Role Column -->
       <ng-container matColumnDef="Role">
-        <mat-header-cell *matHeaderCellDef> Роль </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{userRolesDesc[element.Role]}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef class="admin__table--role"> Роль </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="admin__table--role"> {{userRolesDesc[element.Role]}} </mat-cell>
       </ng-container>
   
       <!-- Group Column -->
@@ -39,8 +40,17 @@
 
       <!-- Actions Column -->
       <ng-container matColumnDef="Actions">
-        <mat-header-cell *matHeaderCellDef> Действия </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.StartYear}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef class="admin__table--actions"></mat-header-cell>
+        <mat-cell *matCellDef="let element" class="admin__table--actions">
+          <div class="layout-row layout-align-start-center flex">
+            <button mat-icon-button color="primary">
+              <mat-icon class=" text--red" aria-label="delete" (click)="DeleteUser(element)">delete_forever</mat-icon>
+            </button>
+            <button mat-icon-button color="primary">
+              <mat-icon class=" text--green" aria-label="edit" (click)="StartEditing(element)">mode_edit</mat-icon>
+            </button>
+          </div>
+        </mat-cell>
       </ng-container>
   
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -53,7 +63,8 @@
 
 <!-- admin__add-user -->
   <div class="admin__add-user flex-30">
-    <h3>Добавление нового пользователя:</h3>
+    <h3 *ngIf="!UserEditingID" >Добавление нового пользователя:</h3>
+    <h3 *ngIf="UserEditingID" >Редоктирование пользователя:</h3>
     <form class="layout-column layout-align-start-stretch flex" [formGroup]="userForm" (submit)="AddUser()">
       <mat-form-field>
         <input matInput placeholder="Логин" 
@@ -81,7 +92,7 @@
         required
         >
       </mat-form-field>
-      <mat-radio-group formControlName="Role" class="layout-column">
+      <mat-radio-group formControlName="Role" class="layout-column admin__add-user--radio-group layout-align-space-around-start">
         <mat-radio-button value="admin">Администратор</mat-radio-button>
         <mat-radio-button value="student">Студент</mat-radio-button>
         <mat-radio-button value="teacher">Преподаватель</mat-radio-button>
@@ -97,7 +108,9 @@
         formControlName="StartYear" 
         >
       </mat-form-field>
-      <button mat-raised-button class="mat-primary">Зарегистрировать</button>
+      <button mat-raised-button class="mat-primary" *ngIf="!UserEditingID">Зарегистрировать</button>
+      <button mat-raised-button class="mat-primary" *ngIf="UserEditingID">Сохранить</button>
+      <button mat-raised-button *ngIf="UserEditingID" type="button" (click)='CancelEditing()'>Отменить</button>
     </form>
   </div>
 <!-- admin__add-user -->

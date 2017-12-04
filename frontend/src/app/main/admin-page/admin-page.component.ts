@@ -18,6 +18,7 @@ export class AdminPageComponent implements OnInit {
   userForm: FormGroup;
 
   isLoading = true;
+  UserEditingID: number;
 
   constructor(private userService: UserService, private fb: FormBuilder) {
     this.createForm();
@@ -40,21 +41,55 @@ export class AdminPageComponent implements OnInit {
   }
 
   async AddUser() {
-    const user = this.userForm.value;
+    const user: IUser = this.userForm.value;
     if (user.Password === user.rePassword) {
       delete user.rePassword;
-      await this.userService.AddUser(user);
+
+      if (this.UserEditingID !== null) {
+        user.ID = this.UserEditingID;
+        await this.userService.SaveUser(user);
+      } else {
+        await this.userService.AddUser(user);
+      }
       this.reload();
     } else {
-      console.log('Пароли');
+      console.warn('Пароли');
+    }
+  }
+
+  async DeleteUser(user) {
+    try {
+      await this.userService.DeleteUser(user);
+      this.reload();
+    } catch (err) {
+      console.warn(err);
     }
   }
 
   async reload() {
     this.isLoading = true;
+    this.UserEditingID = null;
     this.dataSource.data = await this.userService.GetList();
     this.createForm();
     this.isLoading = false;
+  }
+
+  CancelEditing() {
+    this.UserEditingID = null;
+    this.createForm();
+  }
+
+  StartEditing(user: IUser) {
+    this.UserEditingID = user.ID;
+    this.userForm = this.fb.group({
+      Login: [user.Login, Validators.required],
+      FIO: [user.FIO, Validators.required],
+      Password: ['', Validators.required],
+      rePassword: ['', Validators.required],
+      Role: [user.Role, Validators.required],
+      Group: [''],
+      StartYear: [''],
+    });
   }
 
 }

@@ -13,8 +13,11 @@ export class UserController {
         router.get('/logout', this.logout);
 
         router.get('/profile', isAuth, this.profile);
-        router.post('/add', requireAdmin, this.add);
         router.get('/list', requireAdmin, this.list);
+        router.post('/add', requireAdmin, this.add);
+        router.patch('/edit/:id', requireAdmin, this.edit);
+
+        router.delete('/:id', requireAdmin, this.delete);
 
         app.use('/user', router);
     }
@@ -83,6 +86,40 @@ export class UserController {
         }
     }
 
+    private async edit(req: Request, res: Response) {
+        const error = await User.checkFullModel(req);
+        if (error != null) return res.status(400).json(error);
+
+        const id = req.params.id;
+        const CurrentUser = await User.findById<User>(id);
+        if (CurrentUser === null) {
+            return res.status(404).json({ message: 'Такого пользователя нет'});
+        }
+
+        try {
+            const hash = passwordHash.generate(req.body.Password);
+            CurrentUser.Login = req.body.Login;
+            CurrentUser.FIO = req.body.FIO;
+            CurrentUser.Role = req.body.Role;
+            CurrentUser.Hash = hash;
+
+            if (CurrentUser.Role === UserRoles.student) {
+
+                if ((typeof req.body.Group === 'undefined' || req.body.Group === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
+                    return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
+                }
+
+                CurrentUser.Group = req.body.Group;
+                CurrentUser.StartYear = req.body.StartYear;
+            }
+
+            await CurrentUser.save();
+            return res.status(204).json();
+        } catch (err) {
+            return res.status(500).json(err);
+        }
+    }
+
     private async list(req: Request, res: Response) {
         const data = await User.findAll<User>();
         const result = data.map(u => {
@@ -91,5 +128,16 @@ export class UserController {
             return curUser;
         });
         return res.json(result);
+    }
+
+    private async delete(req: Request, res: Response) {
+        const id = req.params.id;
+        const user = await User.findById<User>(id);
+        try {
+            await user.destroy();
+            return res.status(204).json();
+        } catch (err) {
+            return res.status(500).json(err);
+        }
     }
 }

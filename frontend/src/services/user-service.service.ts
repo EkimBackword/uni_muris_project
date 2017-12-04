@@ -50,4 +50,22 @@ export class UserService {
             return [];
         }
     }
+
+    public async SaveUser(user: IUser) {
+        try {
+            return await this.http.patch<IUser[]>(`${environment.backendUrl}/user/edit/${user.ID}`, user).toPromise();
+        } catch (e) {
+            console.warn(e);
+            return [];
+        }
+    }
+
+    public async DeleteUser(user: IUser) {
+        try {
+            return await this.http.delete<void>(`${environment.backendUrl}/user/${user.ID}`).toPromise();
+        } catch (e) {
+            console.warn(e);
+            return [];
+        }
+    }
 }
