@@ -42,6 +42,15 @@ export class UserService {
         }
     }
 
+    async search(term: string) {
+        try {
+            return await this.http.get<IUser[]>(`${environment.backendUrl}/user/search/${term}`).toPromise();
+        } catch (e) {
+            console.warn(e);
+            return [];
+        }
+    }
+
     public async AddUser(user: IUser) {
         try {
             return await this.http.post<IUser[]>(`${environment.backendUrl}/user/add`, user).toPromise();

@@ -93,16 +93,25 @@
         >
       </mat-form-field>
       <mat-radio-group formControlName="Role" class="layout-column admin__add-user--radio-group layout-align-space-around-start">
-        <mat-radio-button value="admin">Администратор</mat-radio-button>
         <mat-radio-button value="student">Студент</mat-radio-button>
         <mat-radio-button value="teacher">Преподаватель</mat-radio-button>
+        <mat-radio-button value="admin">Администратор</mat-radio-button>
       </mat-radio-group>
-      <mat-form-field>
+      <!-- <mat-form-field>
         <input matInput placeholder="Группа"
         formControlName="Group" 
         >
+      </mat-form-field> -->
+      <mat-form-field *ngIf="userForm.value.Role == 'student'">
+        <input matInput placeholder="Group" aria-label="Group" [matAutocomplete]="autoGroup" formControlName="Group">
+        <mat-autocomplete #autoGroup="matAutocomplete">
+          <mat-option *ngFor="let group of filteredGroup | async" [value]="group.ID">
+            <span>{{ group.ID }}</span> |
+            <small>{{group.Title}}</small>
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="userForm.value.Role == 'student'">
         <input matInput placeholder="Год начала обучения"
         type="number"
         formControlName="StartYear" 

@@ -1,8 +1,14 @@
+import { IGroup } from './../../../models/index';
+import { GroupService } from './../../../services/group.service';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { UserService } from '../../../services/user-service.service';
 import { IUser, UserRolesDesc, UserRoles } from '../../../models/user';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import {Observable} from 'rxjs/Observable';
+import {startWith} from 'rxjs/operators/startWith';
+import {map} from 'rxjs/operators/map';
 
 @Component({
   selector: 'app-main-admin-page',
@@ -20,12 +26,20 @@ export class AdminPageComponent implements OnInit {
   isLoading = true;
   UserEditingID: number;
 
-  constructor(private userService: UserService, private fb: FormBuilder) {
+  filteredGroup: Promise<IGroup[]>;
+
+  constructor(
+    private userService: UserService,
+    private fb: FormBuilder,
+    private groupService: GroupService
+  ) {
     this.createForm();
   }
 
   ngOnInit() {
     this.reload();
+    this.groupService.search('50');
+    this.userService.search('ми');
   }
 
   createForm() {
@@ -35,8 +49,12 @@ export class AdminPageComponent implements OnInit {
       Password: ['', Validators.required],
       rePassword: ['', Validators.required],
       Role: [UserRoles.student, Validators.required],
-      Group: [''],
-      StartYear: [''],
+      Group: [null],
+      StartYear: [null],
+    });
+
+    this.userForm.get('Group').valueChanges.subscribe(async (term: string) => {
+      this.filteredGroup = this.groupService.search(term);
     });
   }
 

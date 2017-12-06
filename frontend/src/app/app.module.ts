@@ -1,3 +1,4 @@
+import { GroupService } from './../services/group.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
@@ -11,13 +12,12 @@ import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LessonComponent } from './lesson/lesson.component';
 
-import { MaterialModule } from './material.module';
-
 import { MainRoutingModule } from './appRouting.routing';
 import { AppInterceptor } from './interceptor';
 import { UserService } from '../services/user-service.service';
 import { MainComponent } from './main/main.component';
 import { AdminPageComponent } from './main/admin-page/admin-page.component';
+import { MaterialModule } from './material.module';
 
 
 @NgModule({
@@ -46,6 +46,7 @@ import { AdminPageComponent } from './main/admin-page/admin-page.component';
       multi: true
     },
     UserService,
+    GroupService,
   ],
   bootstrap: [AppComponent]
 })
