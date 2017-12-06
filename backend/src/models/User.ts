@@ -1,8 +1,12 @@
 import {
     Table, Column, Model, HasMany, CreatedAt,
-    UpdatedAt, DataType, Validate, DefaultScope, BelongsToMany
+    UpdatedAt, DataType, Validate, DefaultScope, BelongsToMany, BelongsTo, ForeignKey
 } from 'sequelize-typescript';
 import { Request } from 'express';
+import Subject, { ISubject } from './Subject';
+import UserToSubject from './UserToSubject';
+import Group, { IGroup } from './Group';
+import StudentToLesson, { IStudentToLesson } from './StudentToLesson';
 
 export interface IUser {
     ID?: number;
@@ -10,9 +14,12 @@ export interface IUser {
     FIO: string;
     Role: UserRoles;
     Hash: string;
-
-    Group?: string;
     StartYear?: number;
+    GroupID?: number;
+
+    Group?: IGroup;
+    Subjects?: ISubject[];
+    LessonsInfo?: IStudentToLesson[];
 }
 
 export enum UserRoles {
@@ -31,12 +38,21 @@ export default class User extends Model<User> implements IUser {
     FIO: string;
     @Column({ type: DataType.STRING })
     Role: UserRoles;
-    @Column({ type: DataType.STRING, allowNull: true })
-    Group?: string;
+    @ForeignKey(() => Group)
+    @Column({ type: DataType.INTEGER, allowNull: true })
+    GroupID?: number;
     @Column({ type: DataType.INTEGER, allowNull: true })
     StartYear?: number;
     @Column({ type: DataType.STRING })
     Hash: string;
+
+    @BelongsTo(() => Group, 'GroupID')
+    Group?: IGroup;
+    @BelongsToMany(() => Subject, () => UserToSubject)
+    Subjects?: ISubject[];
+
+    @HasMany(() => StudentToLesson, 'UserID')
+    LessonsInfo?: IStudentToLesson[];
 
     /**
      * @description Проверка полной модели пришедшей в запросе

@@ -8,6 +8,8 @@ import * as passport from 'passport';
 
 import db from './db';
 import { UserController } from './controllers/User.controller';
+import { GroupController } from './controllers/Group.controller';
+import { SubjectController } from './controllers/Subject.controller';
 
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -34,6 +36,8 @@ app.use(passport.session());
 import './authentication';
 
 new UserController(app);
+new SubjectController(app);
+new GroupController(app);
 
 db.authenticate()
     .then(() => db.sync())

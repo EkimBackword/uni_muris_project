@@ -14,6 +14,7 @@ export class UserController {
 
         router.get('/profile', isAuth, this.profile);
         router.get('/list', requireAdmin, this.list);
+        router.get('/search/:term', isAuth, this.search);
         router.post('/add', requireAdmin, this.add);
         router.patch('/edit/:id', requireAdmin, this.edit);
 
@@ -128,6 +129,18 @@ export class UserController {
             return curUser;
         });
         return res.json(result);
+    }
+
+    private async search (req: Request, res: Response) {
+        try {
+            const term: string = req.params.term;
+            const list = await User.findAll<User>();
+            const result = list.filter(item => item.FIO.toLowerCase().indexOf(term.toLowerCase()) > -1)
+                                .map(item => item.toJSON());
+            return res.json(result);
+        } catch (err) {
+            return res.status(500).json(err);
+        }
     }
 
     private async delete(req: Request, res: Response) {
