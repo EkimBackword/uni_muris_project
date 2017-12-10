@@ -1,0 +1,28 @@
+<div class="layout-column flex">
+    
+    <div class="layout-row layout-align-space-between-center">
+        <h3 *ngIf="!GroupID">Добавление нового предмета:</h3>
+        <h3 *ngIf="GroupID">Редактирование предмета:</h3>
+        <button mat-icon-button color="primary" (click)="CloseDialog()">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+    </div>
+
+    <form class="layout-column layout-align-start-stretch flex" [formGroup]="GroupForm" (submit)="AddGroup()">
+        <mat-form-field *ngIf="!GroupID">
+            <input matInput placeholder="Номер Группы" 
+            formControlName="ID"
+            required
+            >
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Название Группы" 
+            formControlName="Title"
+            required
+            >
+        </mat-form-field>
+
+        <button mat-raised-button class="mat-primary" *ngIf="!GroupID">Зарегистрировать</button>
+        <button mat-raised-button class="mat-primary" *ngIf="GroupID">Сохранить</button>
+    </form>
+</div>

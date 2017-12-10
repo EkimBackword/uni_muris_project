@@ -1,0 +1,42 @@
+<div class="layout-column flex">
+    
+    <div class="layout-row layout-align-space-between-center">
+        <h3 *ngIf="!SubjectID">Добавление нового предмета:</h3>
+        <h3 *ngIf="SubjectID">Редактирование предмета:</h3>
+        <button mat-icon-button color="primary" (click)="CloseDialog()">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+    </div>
+
+    <form class="layout-column layout-align-start-stretch flex" [formGroup]="subjectForm" (submit)="AddSubject()">
+        <mat-form-field>
+            <input matInput placeholder="Название предмета" 
+            formControlName="Title"
+            required
+            >
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-chip-list #chipList>
+                <mat-chip *ngFor="let teacher of teachers" (remove)="removeTeacher(teacher)">
+                    {{teacher.FIO}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Учителя"
+                    [matChipInputFor]="chipList"
+                    formControlName="TeacherName"
+                    [matAutocomplete]="autoTeacher"
+                    #teacherInput/>
+                </mat-chip-list>
+                <mat-autocomplete #autoTeacher="matAutocomplete" (optionSelected)="addTeacher($event, teacherInput)">
+                    <mat-option *ngFor="let teacher of filteredTeachers | async" [value]="teacher">
+                        <span>{{ teacher.FIO }}</span> |
+                        <small>{{ teacher.GroupID }}</small>
+                    </mat-option>
+                </mat-autocomplete>
+        </mat-form-field>
+
+        <button mat-raised-button class="mat-primary" *ngIf="!SubjectID">Зарегистрировать</button>
+        <button mat-raised-button class="mat-primary" *ngIf="SubjectID">Сохранить</button>
+    </form>
+</div>

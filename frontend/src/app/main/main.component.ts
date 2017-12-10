@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user-service.service';
-import { IUser, UserRolesDesc, UserRoles } from '../../models/user';
+import { IUser, UserRolesDesc, UserRoles } from '../../models/index';
 import { Router } from '@angular/router';
 
 @Component({

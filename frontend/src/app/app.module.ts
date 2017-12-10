@@ -1,3 +1,4 @@
+import { SubjectService } from './../services/subject.service';
 import { GroupService } from './../services/group.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,7 +18,10 @@ import { AppInterceptor } from './interceptor';
 import { UserService } from '../services/user-service.service';
 import { MainComponent } from './main/main.component';
 import { AdminPageComponent } from './main/admin-page/admin-page.component';
+import { AdminUserComponent, AdminUserDialog } from './main/admin-page/user/user.component';
 import { MaterialModule } from './material.module';
+import { AdminSubjectComponent, AdminSubjectDialog } from './main/admin-page/subject/subject.component';
+import { AdminGroupDialog, AdminGroupComponent } from './main/admin-page/group/group.component';
 
 
 @NgModule({
@@ -28,6 +32,12 @@ import { MaterialModule } from './material.module';
     LessonComponent,
     MainComponent,
     AdminPageComponent,
+    AdminUserComponent,
+    AdminSubjectComponent,
+    AdminGroupComponent,
+    AdminUserDialog,
+    AdminSubjectDialog,
+    AdminGroupDialog
 ],
   imports: [
     BrowserModule,
@@ -47,7 +57,13 @@ import { MaterialModule } from './material.module';
     },
     UserService,
     GroupService,
+    SubjectService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AdminUserDialog,
+    AdminSubjectDialog,
+    AdminGroupDialog
+  ]
 })
 export class AppModule { }

@@ -1,48 +1,55 @@
 import { environment } from './../environments/environment';
-import { IGroup } from './../models/index';
+import { ISubject } from './../models/index';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class GroupService {
+export class SubjectService {
     constructor(private http: HttpClient) { }
 
     async search(term: string) {
+        if (term.length === 0) {
+            return [];
+        }
         try {
-            return await this.http.get<IGroup[]>(`${environment.backendUrl}/group/search/${term}`).toPromise();
+            return await this.http.get<ISubject[]>(`${environment.backendUrl}/subject/search/${term}`).toPromise();
         } catch (e) {
             console.warn(e);
             return [];
         }
     }
+
     async list() {
         try {
-            return await this.http.get<IGroup[]>(`${environment.backendUrl}/group/list`).toPromise();
+            return await this.http.get<ISubject[]>(`${environment.backendUrl}/subject/list`).toPromise();
         } catch (e) {
             console.warn(e);
             return [];
         }
     }
-    async add(group: IGroup) {
+
+    async add(subject: ISubject) {
         try {
-            return await this.http.post<void>(`${environment.backendUrl}/group/add`, group).toPromise();
+            return await this.http.post(`${environment.backendUrl}/subject/add`, subject).toPromise();
         } catch (e) {
             console.warn(e);
             return [];
         }
     }
-    async edit(group: IGroup) {
+
+    async edit(subject: ISubject) {
         try {
-            return await this.http.patch<void>(`${environment.backendUrl}/group/edit/${group.ID}`, group).toPromise();
+            return await this.http.patch(`${environment.backendUrl}/subject/edit/${subject.ID}`, subject).toPromise();
         } catch (e) {
             console.warn(e);
             return [];
         }
     }
-    async delete(group: IGroup) {
+
+    async delete(subject: ISubject) {
         try {
-            return await this.http.delete<void>(`${environment.backendUrl}/group/${group.ID}`).toPromise();
+            return await this.http.delete(`${environment.backendUrl}/subject/${subject.ID}`).toPromise();
         } catch (e) {
             console.warn(e);
             return [];

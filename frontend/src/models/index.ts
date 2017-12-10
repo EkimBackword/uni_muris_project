@@ -6,20 +6,6 @@ export interface IGroup {
     Lessons?: ILesson[];
 }
 
-export interface IUser {
-    ID?: number;
-    Login: string;
-    FIO: string;
-    Role: UserRoles;
-    Hash: string;
-    StartYear?: number;
-    GroupID?: number;
-
-    Group?: IGroup;
-    Subjects?: ISubject[];
-    LessonsInfo?: IStudentToLesson[];
-}
-
 export interface ISubject {
     ID?: number;
     Title: string;
@@ -74,8 +60,31 @@ export enum VisitStatusEnum {
     miss
 }
 
+export interface IUser {
+    ID?: number;
+    Login: string;
+    FIO: string;
+    Role: UserRoles;
+    Hash?: string;
+    StartYear?: number;
+    GroupID?: number;
+
+    Group?: IGroup;
+    Subjects?: ISubject[];
+    LessonsInfo?: IStudentToLesson[];
+
+    Password?: string;
+    rePassword?: string;
+}
+
 export enum UserRoles {
     admin = 'admin',
     student = 'student',
     teacher = 'teacher'
 }
+
+export const UserRolesDesc = {
+    admin: 'Администратор',
+    student: 'Студент',
+    teacher: 'Преподаватель',
+};

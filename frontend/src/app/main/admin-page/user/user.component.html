@@ -1,0 +1,82 @@
+<div class="layout-column layout-align-center-center flex" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+        
+<div class="admin layout-column flex" *ngIf="!isLoading">
+    <div class="admin__table flex layout-column">
+        
+        <span class="admin__table--help">* - только для студентов</span>
+        <mat-table #table [dataSource]="dataSource" class="layout-column flex">
+
+            <!-- Login Column -->
+            <ng-container matColumnDef="Login">
+                <mat-header-cell *matHeaderCellDef class="admin__table--login"> Логин </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="admin__table--login"> {{element.Login}} </mat-cell>
+            </ng-container>
+
+            <!-- FIO Column -->
+            <ng-container matColumnDef="FIO">
+                <mat-header-cell *matHeaderCellDef class="admin__table--fio"> ФИО </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="admin__table--fio"> {{element.FIO}} </mat-cell>
+            </ng-container>
+
+            <!-- Role Column -->
+            <ng-container matColumnDef="Role">
+                <mat-header-cell *matHeaderCellDef class="admin__table--role"> Роль </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="admin__table--role"> {{userRolesDesc[element.Role]}} </mat-cell>
+            </ng-container>
+
+            <!-- Group Column -->
+            <ng-container matColumnDef="GroupID">
+                <mat-header-cell *matHeaderCellDef> Группа * </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.GroupID}} </mat-cell>
+            </ng-container>
+
+            <!-- StartYear Column -->
+            <ng-container matColumnDef="StartYear">
+                <mat-header-cell *matHeaderCellDef> Год поступления * </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.StartYear}} </mat-cell>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef class="admin__table--actions"></mat-header-cell>
+                <mat-cell *matCellDef="let element" class="admin__table--actions">
+                <div class="layout-row layout-align-start-center flex">
+                    <button mat-icon-button color="primary">
+                    <mat-icon class=" text--red" aria-label="delete" (click)="DeleteUser(element)">delete_forever</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary">
+                    <mat-icon class=" text--green" aria-label="edit" (click)="openDialog(element)">mode_edit</mat-icon>
+                    </button>
+                </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+        <mat-paginator #paginator
+                [pageSize]="8"
+                [pageSizeOptions]="[8, 16, 32, 64]">
+        </mat-paginator>
+        
+        <div class="admin__table--footer layout-row layout-align-space-between-center">
+            <mat-form-field class="flex">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Роль" [formControl]="filterRole" multiple>
+                    <mat-option *ngFor="let role of rolesList" [value]="role.type">{{role.text}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="footer__button">
+                <button mat-fab color="primary" (click)="openDialog()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+</div>

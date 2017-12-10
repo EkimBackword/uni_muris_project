@@ -20,3 +20,37 @@ html, body {
 h1, h2, h3, p {
     color: @black;
 }
+
+.mat-tab-label {
+    display: flex;
+    flex: 1 1 auto;
+}
+.mat-tab-body-wrapper {
+    flex: 1 1 auto;
+    .mat-tab-body {
+        display: flex;
+        .mat-tab-body-content {
+            display: flex;
+            flex: 1 1 auto;
+        }
+    }
+}
+
+.mat-fab {
+    height: 40px !important;
+    width: 40px !important;
+
+    mat-icon {
+        font-size: 14px;
+    }
+    
+    .mat-button-wrapper {
+        padding: 14px 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+}
+
+.admin-form__button {
+    margin: 16px !important;
+}

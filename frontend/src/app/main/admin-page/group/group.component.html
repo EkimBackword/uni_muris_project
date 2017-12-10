@@ -1,0 +1,58 @@
+<div class="layout-column layout-align-center-center flex" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
+        
+<div class="admin layout-column flex" *ngIf="!isLoading">
+    <div class="admin__table flex layout-column">
+        
+        <mat-table #table [dataSource]="dataSource" class="layout-column flex">
+
+            <!-- Login Column -->
+            <ng-container matColumnDef="ID">
+                <mat-header-cell *matHeaderCellDef class="admin__table--id"> Номер группы </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="admin__table--id"> {{element.ID}} </mat-cell>
+            </ng-container>
+
+            <!-- FIO Column -->
+            <ng-container matColumnDef="Title">
+                <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Title}} </mat-cell>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef class="admin__table--actions"></mat-header-cell>
+                <mat-cell *matCellDef="let element" class="admin__table--actions">
+                <div class="layout-row layout-align-start-center flex">
+                    <button mat-icon-button color="primary">
+                    <mat-icon class=" text--red" aria-label="delete" (click)="deleteGroup(element)">delete_forever</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary">
+                    <mat-icon class=" text--green" aria-label="edit" (click)="openDialog(element)">mode_edit</mat-icon>
+                    </button>
+                </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+        <mat-paginator #paginator
+                [pageSize]="8"
+                [pageSizeOptions]="[8, 16, 32, 64]">
+        </mat-paginator>
+        
+        <div class="admin__table--footer layout-row layout-align-space-between-center">
+            <mat-form-field class="flex">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
+            </mat-form-field>
+            <div class="footer__button">
+                <button mat-fab color="primary" (click)="openDialog()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+        </div>
+        
+    </div>
+</div>

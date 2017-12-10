@@ -1,0 +1,72 @@
+<div class="layout-column flex">
+    <div class="layout-row layout-align-space-between-center">
+        <h3 *ngIf="!UserEditingID" >Добавление нового пользователя:</h3>
+        <h3 *ngIf="UserEditingID" >Редактирование пользователя:</h3>
+        <button mat-icon-button color="primary" (click)="CloseDialog()">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+    </div>
+    <form class="layout-column layout-align-start-stretch flex" [formGroup]="userForm" (submit)="AddUser()">
+        <mat-form-field>
+            <input matInput placeholder="Логин" 
+            formControlName="Login"
+            required
+            >
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="ФИО" 
+            formControlName="FIO"
+            required
+            >
+        </mat-form-field>
+        <mat-form-field *ngIf="!UserEditingID">
+            <input matInput placeholder="Пароль"
+            type="password"
+            formControlName="Password"
+            required
+            >
+        </mat-form-field>
+        <mat-form-field *ngIf="!UserEditingID">
+            <input matInput placeholder="Подтверждение пароль"
+            type="password"
+            formControlName="rePassword" 
+            required
+            >
+        </mat-form-field>
+        <mat-form-field *ngIf="UserEditingID">
+            <input matInput placeholder="Пароль"
+            type="password"
+            formControlName="Password"
+                        >
+        </mat-form-field>
+        <mat-form-field *ngIf="UserEditingID">
+            <input matInput placeholder="Подтверждение пароль"
+            type="password"
+            formControlName="rePassword" 
+            >
+        </mat-form-field>
+        <mat-radio-group formControlName="Role" class="layout-column admin__add-user--radio-group layout-align-space-around-start">
+            <mat-radio-button value="student">Студент</mat-radio-button>
+            <mat-radio-button value="teacher">Преподаватель</mat-radio-button>
+            <mat-radio-button value="admin">Администратор</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field *ngIf="userForm.value.Role == 'student'">
+            <input matInput placeholder="Группа" aria-label="Group" [matAutocomplete]="autoGroup" formControlName="GroupID">
+            <mat-autocomplete #autoGroup="matAutocomplete">
+            <mat-option *ngFor="let group of filteredGroup | async" [value]="group.ID">
+                <span>{{ group.ID }}</span> |
+                <small>{{group.Title}}</small>
+            </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field *ngIf="userForm.value.Role == 'student'">
+            <input matInput placeholder="Год начала обучения"
+            type="number"
+            formControlName="StartYear" 
+            >
+        </mat-form-field>
+        <button mat-raised-button class="mat-primary admin-form__button" *ngIf="!UserEditingID">Зарегистрировать</button>
+        <button mat-raised-button class="mat-primary admin-form__button" *ngIf="UserEditingID">Сохранить</button>
+    </form>
+</div>

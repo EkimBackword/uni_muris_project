@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { IUser, UserRoles} from '../models/user';
+import { IUser, UserRoles} from '../models/index';
 import { environment } from '../environments/environment';
 
 @Injectable()
@@ -42,9 +42,19 @@ export class UserService {
         }
     }
 
-    async search(term: string) {
+    async search(term: string, option?: { role: string }) {
+        if (term.length === 0) {
+            return [];
+        }
         try {
-            return await this.http.get<IUser[]>(`${environment.backendUrl}/user/search/${term}`).toPromise();
+            let url = `${environment.backendUrl}/user/search/${term}`;
+            if (option !== void 0) {
+                Object.keys(option).forEach((key, index) => {
+                    url += index === 0 ? '?' : '&';
+                    url += `${key}=${option[key]}`;
+                });
+            }
+            return await this.http.get<IUser[]>(url).toPromise();
         } catch (e) {
             console.warn(e);
             return [];
