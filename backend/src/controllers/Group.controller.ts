@@ -1,6 +1,8 @@
 import { Application, Request, Response, NextFunction, Router } from 'express';
 import { isAuth, requireAdmin } from '../authentication';
 import Group, { IGroup } from './../models/Group';
+import User from '../models/User';
+import Lesson from '../models/Lessons';
 
 export class GroupController {
     constructor(app: Application) {
@@ -74,7 +76,15 @@ export class GroupController {
 
     private async delete (req: Request, res: Response) {
         const id = req.params.id;
-        const group = await Group.findById<Group>(id);
+        const group = await Group.findById<Group>(id, {include: [User, Lesson]});
+        group.Students.forEach(async (s: User) => {
+            s.GroupID = null;
+            await s.save();
+        });
+        group.Lessons.forEach(async (l: any) => {
+            l.GroupID = null;
+            await l.save();
+        });
         try {
             await group.destroy();
             return res.status(204).json();

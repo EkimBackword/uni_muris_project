@@ -29,7 +29,7 @@ app.use(session({
     secret: 'keyboard_cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, expires : new Date(Date.now() + 3600000) }
+    cookie: { httpOnly: true }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

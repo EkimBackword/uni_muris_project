@@ -5,6 +5,10 @@ import { isAuth, requireAdmin } from '../authentication';
 const passwordHash = require('password-hash');
 
 import User, { IUser, UserRoles } from '../models/User';
+import Group from '../models/Group';
+import Subject from '../models/Subject';
+import StudentToLesson from '../models/StudentToLesson';
+import UserToSubject from '../models/UserToSubject';
 
 export class UserController {
     constructor(app: Application) {
@@ -43,7 +47,21 @@ export class UserController {
     }
 
     private async profile(req: Request, res: Response) {
-        return res.json(req.user);
+        const includes = [];
+        if (req.query.withGroup !== void 0) {
+            includes.push(Group);
+        }
+        if (req.query.withSubject !== void 0) {
+            includes.push(Subject);
+        }
+        if (req.query.withLessonsInfo !== void 0) {
+            includes.push(StudentToLesson);
+        }
+        if (includes.length === 0) return res.json(req.user);
+        const currentUser: User = await User.findById<User>(req.user.ID, { include: includes });
+        const result: IUser = currentUser.toJSON();
+        delete result.Hash;
+        return res.json(result);
     }
 
     /**
@@ -70,11 +88,11 @@ export class UserController {
             };
             if (data.Role === UserRoles.student) {
 
-                if ((typeof req.body.Group === 'undefined' || req.body.Group === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
+                if ((typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
                     return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
                 }
 
-                data.Group = req.body.Group;
+                data.GroupID = req.body.GroupID;
                 data.StartYear = req.body.StartYear;
             }
 
@@ -88,7 +106,7 @@ export class UserController {
     }
 
     private async edit(req: Request, res: Response) {
-        const error = await User.checkFullModel(req);
+        const error = await User.checkFullModel(req, true);
         if (error != null) return res.status(400).json(error);
 
         const id = req.params.id;
@@ -98,19 +116,21 @@ export class UserController {
         }
 
         try {
-            const hash = passwordHash.generate(req.body.Password);
             CurrentUser.Login = req.body.Login;
             CurrentUser.FIO = req.body.FIO;
             CurrentUser.Role = req.body.Role;
-            CurrentUser.Hash = hash;
+            if (req.body.Password !== void 0) {
+                const hash = passwordHash.generate(req.body.Password);
+                CurrentUser.Hash = hash;
+            }
 
             if (CurrentUser.Role === UserRoles.student) {
 
-                if ((typeof req.body.Group === 'undefined' || req.body.Group === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
+                if ((typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
                     return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
                 }
 
-                CurrentUser.Group = req.body.Group;
+                CurrentUser.GroupID = req.body.GroupID;
                 CurrentUser.StartYear = req.body.StartYear;
             }
 
@@ -135,7 +155,15 @@ export class UserController {
         try {
             const term: string = req.params.term;
             const list = await User.findAll<User>();
-            const result = list.filter(item => item.FIO.toLowerCase().indexOf(term.toLowerCase()) > -1)
+            const result = list.filter(item => {
+                                    if (item.FIO.toLowerCase().indexOf(term.toLowerCase()) > -1) {
+                                        if (req.query.role !== void 0) {
+                                            return item.Role === req.query.role;
+                                        }
+                                        return true;
+                                    }
+                                    return false;
+                                })
                                 .map(item => item.toJSON());
             return res.json(result);
         } catch (err) {
@@ -145,7 +173,9 @@ export class UserController {
 
     private async delete(req: Request, res: Response) {
         const id = req.params.id;
-        const user = await User.findById<User>(id);
+        const user = await User.findById<User>(id, {include: [ Subject ]});
+        const list = await UserToSubject.findAll({where: { UserID: user.ID }});
+        list.forEach(async i => await i.destroy());
         try {
             await user.destroy();
             return res.status(204).json();

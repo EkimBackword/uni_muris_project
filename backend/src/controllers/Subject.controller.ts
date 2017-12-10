@@ -1,6 +1,8 @@
 import { Application, Request, Response, NextFunction, Router } from 'express';
 import { isAuth, requireAdmin } from '../authentication';
 import Subject, { ISubject } from './../models/Subject';
+import User from './../models/User';
+import UserToSubject from './../models/UserToSubject';
 
 export class SubjectController {
     constructor(app: Application) {
@@ -22,8 +24,25 @@ export class SubjectController {
             const data: ISubject = {
                 Title: req.body.Title
             };
-            const newSubject = new Subject(data);
-            await newSubject.save();
+            let newSubject = new Subject(data);
+            newSubject = await newSubject.save();
+
+            const IDs: string[] = req.body.TeachersID;
+            if (IDs === void 0) return res.status(204).json();
+            IDs.forEach(async (id) => {
+                try {
+                    const Teacher = await User.findById<User>(id);
+                    if (Teacher !== void 0) {
+                        const link = new UserToSubject({
+                            UserID: Teacher.ID,
+                            SubjectID: newSubject.ID,
+                        });
+                        await link.save();
+                    }
+                } catch (err) {
+                    console.log(`Пользователя с ID = ${id} не существует`);
+                }
+            });
             return res.status(204).json();
         } catch (err) {
             return res.status(500).json(err);
@@ -42,7 +61,7 @@ export class SubjectController {
     }
     private async getList (req: Request, res: Response) {
         try {
-            const list = await Subject.findAll<Subject>();
+            const list = await Subject.findAll<Subject>({ include: [ User ]});
             const result = list.map(item => item.toJSON());
             return res.json(result);
         } catch (err) {
@@ -56,15 +75,44 @@ export class SubjectController {
 
         try {
             const id: string = req.params.id;
-            const subject = await Subject.findById<Subject>(id);
+            const subject = await Subject.findById<Subject>(id, {include: [ User ]});
             if (!subject || subject === null) {
                 return res.status(404).json({ message: 'Такого предмета не существует'});
             }
             subject.Title = req.body.Title;
+            const fromBodyIDs: number[] = req.body.TeachersID;
+            if (fromBodyIDs === void 0) {
+                await subject.save();
+                return res.status(204).json();
+            }
+            const forDelete = subject.Teachers.filter(t => fromBodyIDs.every(id => id !== t.ID));
+            const forAdd = fromBodyIDs.filter(id => subject.Teachers.every(t => id !== t.ID));
+            forDelete.forEach(async (t) => {
+                const link = await UserToSubject.find<UserToSubject>({where: {
+                    UserID: t.ID,
+                    SubjectID: subject.ID
+                }});
+                await link.destroy();
+            });
+            forAdd.forEach(async (id) => {
+                try {
+                    const Teacher = await User.findById<User>(id);
+                    if (Teacher !== void 0) {
+                        const link = new UserToSubject({
+                            UserID: Teacher.ID,
+                            SubjectID: subject.ID,
+                        });
+                        await link.save();
+                    }
+                } catch (err) {
+                    console.log(`Пользователя с ID = ${id} не существует`, err);
+                }
+            });
             await subject.save();
             return res.status(204).json();
         } catch (err) {
-            return res.status(500).json(err);
+            console.warn(err);
+            return res.status(500).json(err.message);
         }
     }
 

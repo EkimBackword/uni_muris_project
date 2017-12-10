@@ -58,9 +58,11 @@ export default class User extends Model<User> implements IUser {
      * @description Проверка полной модели пришедшей в запросе
      * @param req Объект запроса
      */
-    static async checkFullModel(req: Request) {
+    static async checkFullModel(req: Request, withoutPassword: boolean = false ) {
         req.assert('Login', 'Логин не может быть пустым').notEmpty();
-        req.assert('Password', 'Пароль не может быть пустым').notEmpty();
+        if (!withoutPassword) {
+            req.assert('Password', 'Пароль не может быть пустым').notEmpty();
+        }
         req.assert('FIO', 'ФИО не может быть пустым').notEmpty();
         req.assert('Role', 'Роль должна быть одной из списка (Админнистратор, преподаватель или студент)').notEmpty();
 

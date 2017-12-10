@@ -31,7 +31,7 @@ export default class Lesson extends Model<Lesson> implements ILesson {
     @Column({ type: DataType.INTEGER })
     SubjectID: number;
     @ForeignKey(() => Group)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.INTEGER, allowNull: true })
     GroupID: number;
     @Column({ type: DataType.STRING })
     Title: string;
