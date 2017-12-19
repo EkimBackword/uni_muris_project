@@ -19,7 +19,14 @@ export class MainComponent implements OnInit {
   async ngOnInit() {
     this.profile = await this.userService.GetUser();
     switch (this.profile.Role) {
-      case UserRoles.admin: this.router.navigate(['/main/admin']);
+      case UserRoles.admin: {
+        this.router.navigate(['/main/admin']);
+        break;
+      }
+      default: {
+        this.router.navigate(['/main/uni']);
+        break;
+      }
     }
   }
 

@@ -9,9 +9,16 @@ export class UserService {
 
     constructor(private http: HttpClient) {}
 
-    public async GetUser() {
+    public async GetUser(option?: {withGroup?: boolean, withSubject?: boolean, withLessonsInfo?: boolean}) {
         try {
-            return await this.http.get<IUser>(`${environment.backendUrl}/user/profile`).toPromise();
+            let url = `${environment.backendUrl}/user/profile`;
+            if (option !== void 0) {
+                Object.keys(option).forEach((key, index)  => {
+                    url += index === 0 ? '?' : '&';
+                    url += `${key}=${option[key]}`;
+                });
+            }
+            return await this.http.get<IUser>(url).toPromise();
         } catch (e) {
             return null;
         }
@@ -33,9 +40,16 @@ export class UserService {
         }
     }
 
-    public async GetList() {
+    public async GetList(option?: {GroupID?: number}) {
         try {
-            return await this.http.get<IUser[]>(`${environment.backendUrl}/user/list`).toPromise();
+            let url = `${environment.backendUrl}/user/list`;
+            if (option !== void 0) {
+                Object.keys(option).forEach((key, index) => {
+                    url += index === 0 ? '?' : '&';
+                    url += `${key}=${option[key]}`;
+                });
+            }
+            return await this.http.get<IUser[]>(url).toPromise();
         } catch (e) {
             console.warn(e);
             return [];

@@ -28,7 +28,7 @@ export interface IFile {
 }
 
 export interface ILesson {
-    ID: number;
+    ID?: number;
     SubjectID: number;
     GroupID: number;
     Date: Date;
@@ -47,6 +47,7 @@ export interface IStudentToLesson {
     UserID: number;
     LessonID: number;
     VisitStatus: VisitStatusEnum;
+    Score: number;
     Description: string;
 
     Student?: IUser;

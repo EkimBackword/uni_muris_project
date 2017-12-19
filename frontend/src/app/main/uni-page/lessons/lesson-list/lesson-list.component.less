@@ -1,0 +1,53 @@
+@import '../../../../../variable.less';
+
+:host {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    box-shadow: -2px 0px 4px 2px fade(@black, 25%); 
+    z-index: 10; 
+    background-color: fade( @white, 90% );
+}
+
+.lessons-list {
+    padding: 8px;
+}
+
+.lessons-list__body {
+    background-color: @white;    
+    overflow: auto;
+    outline: 1px solid fade(@blue, 25%);
+
+    .body__item {
+        height: 50px;
+        margin: 4px;
+        padding: 4px;
+        border-bottom: 1px solid fade(@black, 25%);
+
+        &:hover {
+            background-color: fade(@blue, 8%);
+            box-shadow: 0 0 4px fade(@black, 25%);
+        }
+        
+        &.body__item--active {
+            background-color: fade(@blue, 15%);
+            box-shadow: 0 0 4px fade(@black, 25%);
+        }
+    }
+}
+
+.lessons-list__actions {
+
+    height: 50px;
+
+    .lessons-list__actions--add {
+        background-color: @yellow; 
+        color: @black;
+        opacity: 0.7;
+    
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+}

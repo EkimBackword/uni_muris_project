@@ -6,6 +6,7 @@ import { MainComponent } from './main/main.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LessonComponent } from './lesson/lesson.component';
 import { AdminPageComponent } from './main/admin-page/admin-page.component';
+import { UniPageComponent } from './main/uni-page/uni-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,9 +14,9 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       { path: 'admin', component: AdminPageComponent },
+      { path: 'uni', component: UniPageComponent },
     ]
   },
-  { path: 'lesson/:subject/:groupe/:lessonid', component: LessonComponent },
   { path: '**', component: NotFoundComponent }
 ];
 

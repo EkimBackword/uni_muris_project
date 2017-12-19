@@ -1,0 +1,31 @@
+<div class="lessons-list flex layout-column">
+    
+    <mat-form-field *ngIf="isTeacher">
+        <input matInput placeholder="Группа" aria-label="Group" [matAutocomplete]="autoGroup" [formControl]="Group">
+        <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="selectGroup($event)">
+            <mat-option *ngFor="let group of filteredGroup | async" [value]="group.ID">
+                <span>{{ group.ID }}</span> |
+                <small>{{ group.Title }}</small>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+
+    <div class="lessons-list__body flex layout-column">
+        <div *ngFor="let subject of Subjects" 
+                class="body__item layout-row layout-align-space-between-center"
+                (click)="Select(subject)"
+                [ngClass]="{
+                    'body__item--active': subject.ID === SelectedSubjectID
+                }"
+        >
+            <h3>
+                {{subject.Title}}
+            </h3>
+        </div>
+        <div class="flex layout-column layout-align-center-center" *ngIf="!Subjects || Subjects.length == 0">
+            <h3>Список предметов пуст</h3>
+        </div>
+    </div>
+
+</div>

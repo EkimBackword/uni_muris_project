@@ -1,0 +1,15 @@
+<div class="subjects flex layout-row">
+    <app-main-subject-list 
+        class=" subjects__list"
+        *ngIf="profile !== null" 
+        [profile]="profile"
+        (OnSelected)="OnSeleced($event)"
+    ></app-main-subject-list>
+    <app-main-subject-stat
+        *ngIf="profile !== null && Selected !== null"
+        [selected]="Selected"
+        [profile]="profile"
+        (OnClosed)="OnClose()"
+        class=" subjects__stat flex-nogrow flex-noshrink" 
+    ></app-main-subject-stat>
+</div>

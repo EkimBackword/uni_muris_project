@@ -3,8 +3,8 @@ import {} from 'jest';
 
 const request = supertest("http://localhost:35123/user");
 let options: any = {
-    userInfo: { 
-        ID: null 
+    userInfo: {
+        ID: null
     }
 };
 
@@ -12,10 +12,10 @@ describe("Добавление нового пользователя", () => {
     it("204 (Добавить в БД)", (done) => {
       request.post("/add")
         .send({
-            Login: "Test",
-            Password: "testadmin",
+            Login: "root",
+            Password: "test123",
             FIO: "Тестовый Тест Тестович",
-            Role: "admin",
+            Role: "admin"
         })
         .expect(204, done);
     });

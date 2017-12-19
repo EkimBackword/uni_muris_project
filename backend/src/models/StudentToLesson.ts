@@ -10,15 +10,16 @@ import Lesson, { ILesson } from './Lessons';
 import File, { IFile } from './Files';
 
 export interface IStudentToLesson {
-    ID: number;
+    ID?: number;
     UserID: number;
     LessonID: number;
     VisitStatus: VisitStatusEnum;
+    Score: number;
     Description: string;
 
     Student?: IUser;
     Lesson?: ILesson;
-    Files?: any[];
+    Files?: IFile[];
 }
 
 export enum VisitStatusEnum {
@@ -29,7 +30,7 @@ export enum VisitStatusEnum {
 
 @Table
 export default class StudentToLesson extends Model<StudentToLesson> implements IStudentToLesson {
-    @Column({ primaryKey: true, type: DataType.INTEGER })
+    @Column({ primaryKey: true, type: DataType.INTEGER, autoIncrement: true })
     ID: number;
     @ForeignKey(() => User)
     @Column({ type: DataType.INTEGER })
@@ -37,10 +38,12 @@ export default class StudentToLesson extends Model<StudentToLesson> implements I
     @ForeignKey(() => Lesson)
     @Column({ type: DataType.INTEGER })
     LessonID: number;
-    @Column({ type: DataType.STRING })
+    @Column({ type: DataType.STRING({length: 1024}) })
     Description: string;
     @Column({ type: DataType.INTEGER })
     VisitStatus: VisitStatusEnum;
+    @Column({ type: DataType.INTEGER, allowNull: true })
+    Score: number;
 
     @BelongsTo(() => User, 'UserID')
     Student?: IUser;

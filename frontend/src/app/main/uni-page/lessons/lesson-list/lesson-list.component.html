@@ -1,0 +1,58 @@
+<div class="lessons-list flex layout-column">
+    
+    <mat-form-field *ngIf="isTeacher">
+        <input matInput placeholder="Группа" aria-label="Group" [matAutocomplete]="autoGroup" [formControl]="Group">
+        <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="selectGroup($event)">
+            <mat-option *ngFor="let group of filteredGroup | async" [value]="group.ID">
+                <span>{{ group.ID }}</span> |
+                <small>{{ group.Title }}</small>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="Subjects">
+        <mat-select placeholder="Предмет" (valueChange)="selectSubject($event)">
+            <mat-option *ngFor="let subject of Subjects" [value]="subject">
+            {{ subject.Title }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <div class="lessons-list__body flex layout-column">
+        <div *ngFor="let lesson of Lessons"
+             class="body__item layout-row layout-align-space-between-center"
+             (click)="SelectLesson(lesson)"
+             [ngClass]="{
+                'body__item--active': lesson.ID === SelectedLessonID
+             }"
+        >
+            <h3>
+                {{lesson.Title}}
+            </h3>
+            <div class="layout-row layout-align-start-center">
+                <p>{{lesson.Date | date: 'dd.MM.yyyy' }}</p>
+                <button *ngIf="isTeacher" mat-icon-button color="primary">
+                    <mat-icon class="text--red" aria-label="delete" (click)="DeleteLesson(lesson)">delete_forever</mat-icon>
+                </button>
+                <button *ngIf="isTeacher" mat-icon-button color="primary">
+                    <mat-icon class=" text--green" aria-label="edit" (click)="openDialog(lesson)">mode_edit</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="flex layout-column layout-align-center-center" *ngIf="!isLoading && (!Lessons || Lessons.length == 0)">
+            <h3>Список занятий пуст</h3>
+            <p>Выберите другой предмет <span *ngIf="isTeacher">или группу</span></p>
+            <p *ngIf="isTeacher">Чтобы добавить новое занятие нажмите на '+'</p>
+        </div>
+        <div class="flex layout-column layout-align-center-center" *ngIf="isLoading">
+            <mat-spinner></mat-spinner>
+        </div>
+    </div>
+
+    <div class="lessons-list__actions layout-row layout-align-end-center">
+        <button mat-fab class="lessons-list__actions--add" (click)="openDialog()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>

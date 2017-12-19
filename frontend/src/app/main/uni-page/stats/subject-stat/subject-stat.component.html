@@ -1,0 +1,64 @@
+<div class="stats flex layout-row">
+    <div class="layout-column stats__fio--list" *ngIf="lessons && lessons.length !== 0">
+        <span *ngFor="let student of students" class="fio-list__row">
+            {{student.FIO}}
+        </span>
+    </div>
+    <div
+        *ngFor="let lesson of lessons"
+        class="layout-column stats__lessons-list"
+    >
+        <div class="lessons-list__title">
+            {{lesson.Title}}
+        </div>
+        <div class="layout-row lessons-list__common-info">
+            <span class="lessons-list__common-info--cell">Посещение</span>
+            <span class="lessons-list__common-info--cell">Оценка</span>
+        </div>
+        <div class="layout-row lessons-list__row" *ngFor="let student of students" 
+            [ngClass]="{
+                'lessons-list__row--current': student.ID == profile.ID
+            }"
+        >
+            <div class="layout-row layout-align-space-around-center lessons-list__row--cell">
+                <button 
+                    *ngIf="profile.Role === 'teacher' || VisitStatus[student.ID+'_'+lesson.ID] == 2" 
+                    mat-icon-button color="primary" 
+                    (click)="ChangeVisitInfo(student.ID, lesson.ID, 2)"
+                    
+                >
+                    <mat-icon [ngClass]="{ 'lessons-list__row--active-cell': VisitStatus[student.ID+'_'+lesson.ID] == 2 }" class="text--red" aria-label="edit" >visibility_off</mat-icon>
+                </button>
+                <button
+                    *ngIf="profile.Role === 'teacher' || VisitStatus[student.ID+'_'+lesson.ID] == 1"
+                    mat-icon-button color="primary"
+                    (click)="ChangeVisitInfo(student.ID, lesson.ID, 1)"
+                    
+                >
+                    <mat-icon [ngClass]="{ 'lessons-list__row--active-cell': VisitStatus[student.ID+'_'+lesson.ID] == 1 }" class="text--green" aria-label="delete">visibility</mat-icon>
+                </button>
+            </div>
+            <div class="layout-row layout-align-space-between-center lessons-list__row--cell">
+                <button *ngIf="profile.Role === 'teacher'" mat-icon-button color="primary" (click)="ChangeScore(student.ID, lesson.ID, -1)">
+                    <mat-icon class="text--red" aria-label="delete" >remove</mat-icon>
+                </button>
+                <div></div>
+                <span>
+                        {{Scores[student.ID+'_'+lesson.ID]}}
+                </span>
+                <div></div>
+                <button *ngIf="profile.Role === 'teacher'" mat-icon-button color="primary" (click)="ChangeScore(student.ID, lesson.ID, 1)">
+                    <mat-icon class=" text--green" aria-label="edit" >add</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!lessons || lessons.length === 0" class="layout-align-center-center layout-column flex">
+        <h1>
+            Отсутсутствует список занятий
+        </h1>
+        <h2>
+            для сочетания данной группы и предмета
+        </h2>
+    </div>
+</div>

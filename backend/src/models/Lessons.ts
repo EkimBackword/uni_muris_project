@@ -9,7 +9,7 @@ import StudentToLesson, { IStudentToLesson } from './StudentToLesson';
 import File, { IFile } from './Files';
 
 export interface ILesson {
-    ID: number;
+    ID?: number;
     SubjectID: number;
     GroupID: number;
     Date: Date;
@@ -25,17 +25,17 @@ export interface ILesson {
 
 @Table
 export default class Lesson extends Model<Lesson> implements ILesson {
-    @Column({ primaryKey: true, type: DataType.INTEGER })
+    @Column({ primaryKey: true, type: DataType.INTEGER, autoIncrement: true })
     ID: number;
     @ForeignKey(() => Subject)
     @Column({ type: DataType.INTEGER })
     SubjectID: number;
     @ForeignKey(() => Group)
-    @Column({ type: DataType.INTEGER, allowNull: true })
+    @Column({ type: DataType.INTEGER })
     GroupID: number;
     @Column({ type: DataType.STRING })
     Title: string;
-    @Column({ type: DataType.STRING })
+    @Column({ type: DataType.STRING({length: 1024}) })
     Description: string;
     @Column({ type: DataType.DATE })
     Date: Date;
@@ -49,4 +49,21 @@ export default class Lesson extends Model<Lesson> implements ILesson {
     StudentsInfo?: IStudentToLesson[];
     @HasMany(() => File, 'LessonID')
     Files?: IFile[];
+
+
+    /**
+     * @description Проверка полной модели пришедшей в запросе
+     * @param req Объект запроса
+     */
+    static async checkFullModel(req: Request, withoutPassword: boolean = false ) {
+        req.assert('SubjectID', 'SubjectID не может быть пустым').notEmpty();
+        req.assert('GroupID', 'GroupID не может быть пустым').notEmpty();
+        req.assert('Title', 'Title не может быть пустым').notEmpty();
+        req.assert('Description', 'Description не может быть пустым').notEmpty();
+        req.assert('Date', 'Date не может быть пустым').notEmpty();
+
+        const errors = await req.getValidationResult();
+        if (errors.isEmpty()) return null;
+        return errors.array({onlyFirstError: true})[0];
+    }
 }

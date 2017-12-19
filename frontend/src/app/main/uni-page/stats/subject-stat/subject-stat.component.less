@@ -1,0 +1,83 @@
+@import '../../../../../variable.less';
+
+:host {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.stats {
+    max-width: 560px;
+    min-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    flex-shrink: 0;
+    margin: 0 auto;
+    margin: 8px;
+
+    .stats__fio--list {
+        width: 250px;
+        flex-shrink: 0;
+        height: 100%;
+        padding-top: 100px;
+
+        .fio-list__row {
+            outline: 1px solid @black;
+            height: 25px;
+        }
+    }
+
+    .stats__lessons-list {
+        width: 300px;
+        flex-shrink: 0;
+        height: 100%;
+
+        .lessons-list__title {
+            height: 50px;
+            text-align: center;
+            outline: 1px solid @black;
+        }
+
+        .lessons-list__common-info {
+            height: 50px;
+            text-align: center;
+            outline: 1px solid @black;
+
+            .lessons-list__common-info--cell {
+                width: 150px;
+                outline: 1px solid @black;
+            }
+
+        }
+
+        .lessons-list__row {
+            height: 25px;
+
+            .lessons-list__row--cell {
+                width: 150px;
+                text-align: center;
+                outline: 1px solid @black;
+            }
+
+            &.lessons-list__row--current {
+                background-color: fade(@blue, 15%);
+            }
+            
+            &:hover {
+                background-color: fade(@grey, 20%);
+            }
+        }
+    }
+}
+
+mat-icon {
+    opacity: 0.4;
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &.lessons-list__row--active-cell {
+        opacity: 1;
+    }
+}

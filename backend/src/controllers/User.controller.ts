@@ -7,8 +7,9 @@ const passwordHash = require('password-hash');
 import User, { IUser, UserRoles } from '../models/User';
 import Group from '../models/Group';
 import Subject from '../models/Subject';
-import StudentToLesson from '../models/StudentToLesson';
+import StudentToLesson, { IStudentToLesson, VisitStatusEnum } from '../models/StudentToLesson';
 import UserToSubject from '../models/UserToSubject';
+import Lesson from '../models/Lessons';
 
 export class UserController {
     constructor(app: Application) {
@@ -17,9 +18,9 @@ export class UserController {
         router.get('/logout', this.logout);
 
         router.get('/profile', isAuth, this.profile);
-        router.get('/list', requireAdmin, this.list);
+        router.get('/list', isAuth, this.list);
         router.get('/search/:term', isAuth, this.search);
-        router.post('/add', requireAdmin, this.add);
+        router.post('/add', this.add);
         router.patch('/edit/:id', requireAdmin, this.edit);
 
         router.delete('/:id', requireAdmin, this.delete);
@@ -94,11 +95,25 @@ export class UserController {
 
                 data.GroupID = req.body.GroupID;
                 data.StartYear = req.body.StartYear;
+
             }
 
-            const newUser = new User(data);
-            await newUser.save();
+            let newUser = new User(data);
+            newUser = await newUser.save();
 
+            if (data.Role === UserRoles.student) {
+                const lessons = await Lesson.findAll<Lesson>({where: {GroupID: data.GroupID}});
+                lessons.forEach( async lesson => {
+                    const StudInfo: IStudentToLesson = {
+                        Description: '',
+                        UserID: newUser.ID,
+                        LessonID: lesson.ID,
+                        VisitStatus: VisitStatusEnum.unknown,
+                        Score: 0,
+                    };
+                    await new StudentToLesson(StudInfo).save();
+                });
+            }
             return res.status(204).json();
         } catch (err) {
             return res.status(500).json(err);
@@ -142,7 +157,12 @@ export class UserController {
     }
 
     private async list(req: Request, res: Response) {
-        const data = await User.findAll<User>();
+        const WHERE: any = {};
+        const GroupID = req.query.GroupID;
+        if (GroupID !== void 0) {
+            WHERE['GroupID'] = GroupID;
+        }
+        const data = await User.findAll<User>({ where: WHERE });
         const result = data.map(u => {
             const curUser: IUser = u.toJSON();
             delete curUser.Hash;

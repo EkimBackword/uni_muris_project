@@ -5,7 +5,7 @@
       <h3>ФИО: {{profile.FIO}}</h3>
       <h3>Роль: {{userRolesDesc[profile.Role]}}</h3>
       <h3 *ngIf="profile.Role == 'student'">
-        Группа: {{profile.Group}}
+        Группа: {{profile.GroupID}}
       </h3>
       <h3 *ngIf="profile.Role == 'student'">
         Год начала обучения: {{profile.StartYear}}

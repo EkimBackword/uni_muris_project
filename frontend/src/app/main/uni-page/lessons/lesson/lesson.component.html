@@ -1,0 +1,20 @@
+<div class="lesson flex layout-column">
+
+    <div class="lesson__header layout-row layout-align-space-between-center">
+        <div class="layout-row layout-align-start-center">
+            <h2>{{lesson.Title}}</h2>
+            <p>( Дата проведения занятия: {{lesson.Date | date: 'dd.MM.yyyy' }} )</p>
+        </div>
+        <button mat-icon-button color="primary" (click)="close()">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+    </div>
+
+    <div class="lesson__body">
+        <p>{{lesson.Description}}</p>
+    </div>
+    <div class="lesson__footer">
+        
+    </div>
+
+</div>

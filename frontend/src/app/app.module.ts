@@ -11,7 +11,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { LessonComponent } from './lesson/lesson.component';
 
 import { MainRoutingModule } from './appRouting.routing';
 import { AppInterceptor } from './interceptor';
@@ -23,22 +22,48 @@ import { MaterialModule } from './material.module';
 import { AdminSubjectComponent, AdminSubjectDialog } from './main/admin-page/subject/subject.component';
 import { AdminGroupDialog, AdminGroupComponent } from './main/admin-page/group/group.component';
 
+import { UniPageComponent } from './main/uni-page/uni-page.component';
+import { LessonsComponent } from './main/uni-page/lessons/lessons.component';
+import { LessonListComponent } from './main/uni-page/lessons/lesson-list/lesson-list.component';
+import { StatsComponent } from './main/uni-page/stats/stats.component';
+import { LessonComponent } from './main/uni-page/lessons/lesson/lesson.component';
+import { LessonService } from '../services/lesson.service';
+import { AddLessonDialog } from './main/uni-page/lessons/lesson-list/dialogs/add-lesson.dialog';
+import { FlowService } from '../services/flow.service';
+import { FileUploadModule } from 'ng2-file-upload';
+import { UploadComponent } from './main/uni-page/upload/upload.component';
+import { SubjectStatComponent } from './main/uni-page/stats/subject-stat/subject-stat.component';
+import { SubjectListComponent } from './main/uni-page/stats/subject-list/subject-list.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     NotFoundComponent,
-    LessonComponent,
+    // LessonComponent,
     MainComponent,
+    UploadComponent,
+
+    UniPageComponent,
+    LessonsComponent,
+    LessonListComponent,
+    LessonComponent,
+    StatsComponent,
+    SubjectStatComponent,
+    SubjectListComponent,
+
+
     AdminPageComponent,
     AdminUserComponent,
     AdminSubjectComponent,
     AdminGroupComponent,
+
     AdminUserDialog,
     AdminSubjectDialog,
-    AdminGroupDialog
-],
+    AdminGroupDialog,
+    AddLessonDialog
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -47,7 +72,8 @@ import { AdminGroupDialog, AdminGroupComponent } from './main/admin-page/group/g
     HttpClientModule,
     MainRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ],
   providers: [
     {
@@ -57,13 +83,16 @@ import { AdminGroupDialog, AdminGroupComponent } from './main/admin-page/group/g
     },
     UserService,
     GroupService,
-    SubjectService
+    SubjectService,
+    LessonService,
+    FlowService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
     AdminUserDialog,
     AdminSubjectDialog,
-    AdminGroupDialog
+    AdminGroupDialog,
+    AddLessonDialog
   ]
 })
 export class AppModule { }

@@ -3,12 +3,14 @@ import { isAuth, requireAdmin } from '../authentication';
 import Subject, { ISubject } from './../models/Subject';
 import User from './../models/User';
 import UserToSubject from './../models/UserToSubject';
+import Lesson, { ILesson } from './../models/Lessons';
 
 export class SubjectController {
     constructor(app: Application) {
         const router = Router();
         router.get('/search/:term', isAuth, this.search);
         router.get('/list', isAuth, this.getList);
+        router.get('/list/:group_id', isAuth, this.getListByGroupID);
         router.post('/add', requireAdmin, this.add);
         router.patch('/edit/:id', requireAdmin, this.edit);
         router.delete('/:id', requireAdmin, this.delete);
@@ -59,10 +61,25 @@ export class SubjectController {
             return res.status(500).json(err);
         }
     }
+
     private async getList (req: Request, res: Response) {
         try {
             const list = await Subject.findAll<Subject>({ include: [ User ]});
             const result = list.map(item => item.toJSON());
+            return res.json(result);
+        } catch (err) {
+            return res.status(500).json(err);
+        }
+    }
+
+    private async getListByGroupID (req: Request, res: Response) {
+        const SearchID: number = parseInt(req.params.group_id);
+        try {
+            const lessonList = await Lesson.findAll<Lesson>({ attributes: ['Subject.ID', 'Subject.Title'], where: { GroupID: SearchID }, include: [ Subject ], group: ['Subject.ID'] });
+            const result = lessonList.map(l => {
+                const lesson: ILesson = l.toJSON();
+                return lesson.Subject;
+            });
             return res.json(result);
         } catch (err) {
             return res.status(500).json(err);

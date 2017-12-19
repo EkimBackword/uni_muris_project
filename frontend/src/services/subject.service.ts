@@ -29,6 +29,15 @@ export class SubjectService {
         }
     }
 
+    async listByGroupID(GroupID: number) {
+        try {
+            return await this.http.get<ISubject[]>(`${environment.backendUrl}/subject/list/${GroupID}`).toPromise();
+        } catch (e) {
+            console.warn(e);
+            return [];
+        }
+    }
+
     async add(subject: ISubject) {
         try {
             return await this.http.post(`${environment.backendUrl}/subject/add`, subject).toPromise();

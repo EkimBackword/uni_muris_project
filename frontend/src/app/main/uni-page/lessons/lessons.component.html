@@ -1,0 +1,15 @@
+<div class="lessons flex layout-row">
+    <app-main-lesson-list 
+        class="lesson__list flex-25" 
+        *ngIf="profile !== null" 
+        [profile]="profile"
+        (OnSelected)="OnSeleced($event)"
+        (OnReload)="OnClose()"
+    ></app-main-lesson-list>
+    <app-main-lesson 
+        class="lessons__lesson flex-75"
+        *ngIf="profile !== null && SelectedLesson !== null"
+        [lesson]="SelectedLesson"
+        (OnClosed)="OnClose()"
+    ></app-main-lesson>
+</div>

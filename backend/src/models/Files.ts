@@ -7,7 +7,7 @@ import StudentToLesson, { IStudentToLesson } from './StudentToLesson';
 import Lesson, { ILesson } from './Lessons';
 
 export interface IFile {
-    ID: number;
+    ID?: number;
     Path: string;
     Name: string;
     Ext: string;
@@ -21,7 +21,7 @@ export interface IFile {
 
 @Table
 export default class File extends Model<File> implements IFile {
-    @Column({ primaryKey: true, type: DataType.INTEGER })
+    @Column({ primaryKey: true, type: DataType.INTEGER, autoIncrement: true })
     ID: number;
     @Column({ type: DataType.STRING })
     Path: string;

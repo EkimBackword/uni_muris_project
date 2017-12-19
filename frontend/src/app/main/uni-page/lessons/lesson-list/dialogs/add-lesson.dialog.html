@@ -1,0 +1,51 @@
+<div class="layout-column flex">
+    
+    <div class="layout-row layout-align-space-between-center">
+        <h3 *ngIf="!LessonID">Добавление нового предмета:</h3>
+        <h3 *ngIf="LessonID">Редактирование предмета:</h3>
+        <button mat-icon-button color="primary" (click)="CloseDialog()">
+            <mat-icon aria-label="Close">close</mat-icon>
+        </button>
+    </div>
+
+    <form class="layout-column layout-align-start-stretch flex" [formGroup]="LessonForm" (submit)="SaveLesson()">
+        
+        <mat-form-field>
+            <input matInput placeholder="Группа" aria-label="Group" [matAutocomplete]="autoGroup" formControlName="GroupID">
+            <mat-autocomplete #autoGroup="matAutocomplete">
+                <mat-option *ngFor="let group of filteredGroup | async" [value]="group.ID">
+                    <span>{{ group.ID }}</span> |
+                    <small>{{group.Title}}</small>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field *ngIf="data.subjects">
+            <mat-select placeholder="Предмет" formControlName="SubjectID">
+                <mat-option *ngFor="let subject of data.subjects" [value]="subject.ID">
+                    {{ subject.Title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Название" 
+            formControlName="Title"
+            required
+            >
+        </mat-form-field>
+        <mat-form-field>
+            <textarea matInput placeholder="Описание занятия" formControlName="Description" required></textarea>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Дата проедения" formControlName="Date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- <div id="flow" class="layout-row">
+            <button id="flow__button" mat-raised-button class="mat-primary">Добавить файл</button>
+        </div> -->
+
+        <button mat-raised-button class="mat-primary" *ngIf="!LessonID">Зарегистрировать</button>
+        <button mat-raised-button class="mat-primary" *ngIf="LessonID">Сохранить</button>
+    </form>
+</div>
