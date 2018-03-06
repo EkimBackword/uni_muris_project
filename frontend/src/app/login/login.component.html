@@ -1,11 +1,22 @@
 <div class="login-form">
-  <h1>Форма входа</h1>
+  <img src="assets/img/uni-dubna.jpg" alt="uni-dubna">
+  <h2>Добро пожаловать</h2>
   <form action="" class="layout-column" (submit)="Login()">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Логин" [(ngModel)]="login" [ngModelOptions]="{standalone: true}" required>
+    <mat-form-field>
+      <input matInput type="text"
+          placeholder="Логин" 
+          [(ngModel)]="login"
+          [ngModelOptions]="{standalone: true}"
+          required
+        >
     </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Пароль" type="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" required>
+    <mat-form-field>
+      <input matInput type="password"
+          placeholder="Пароль" 
+          [(ngModel)]="password"
+          [ngModelOptions]="{standalone: true}"
+          required
+        >
     </mat-form-field>
     <!-- <button>Войти</button> -->
     <button mat-raised-button class="mat-primary">Войти</button>

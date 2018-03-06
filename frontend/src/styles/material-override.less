@@ -1,0 +1,31 @@
+@import '../variable.less';
+
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary,
+.mat-raised-button.mat-primary {
+    background-color: @color-element-action;
+
+    span {
+        color: @color-font-inverse;
+        font-weight: 700;
+    }
+}
+
+.mat-form-field-placeholder {
+    color: @color-font;
+}
+.mat-focused .mat-form-field-placeholder {
+    color: @color-primary;
+}
+.mat-form-field-invalid .mat-form-field-placeholder {
+    color: @color-warn;
+}
+.mat-form-field-ripple {
+    background-color: @color-primary;
+}
+.mat-form-field-invalid .mat-form-field-ripple {
+    background-color: @color-warn;
+}
+.mat-form-field-underline {
+    bottom: 22px;
+}

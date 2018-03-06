@@ -1,0 +1,79 @@
+@import '../variable.less';
+
+.admin__table {
+    padding: 8px;
+
+    .admin__table--footer {
+        margin-top: 8px;
+        mat-form-field {
+            padding: 0 8px;
+        }
+
+        .footer__button {
+            padding: 0 16px;
+        }
+    }
+
+    mat-table {
+        overflow: auto;
+        background-color: transparent;
+        box-shadow: 0 0 2px 1px @color-background-dark;
+
+        .mat-header-row, .mat-row {
+            padding: 0 16px;
+        }
+
+        .mat-header-row {
+            background-color: @color-background-dark;
+            min-height: 25px;
+            .mat-header-cell {
+                font-size: 12px;
+                color: @color-font-inverse;
+            }
+        }
+
+        .mat-row {
+            min-height: 40px;
+            .mat-cell {
+                font-size: 14px;
+            }
+            &:hover {
+                background-color: fade(@color-element-hover, 25%);
+            }
+        }
+    }
+
+    .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
+        background-color: transparent;
+        font-size: @font-size;
+    }
+    
+    .admin__table--title,
+    .admin__table--fio {
+        flex: 0 0 250px;
+    }
+    .admin__table--role {
+        flex: 0 0 150px;
+    }
+    .admin__table--id,
+    .admin__table--login {
+        flex: 0 0 100px;
+    }
+    .admin__table--actions {
+        flex: 0 0 80px;
+
+        mat-icon {
+            opacity: .5;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+    
+    .admin__table--help {
+        padding: 4px 16px;
+        color: @color-primary;
+        font-size: 14px;
+    }
+}

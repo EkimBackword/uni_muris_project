@@ -3,22 +3,61 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "./angular-material.layouts.min.css";
 @import "./variable.less";
+@import "./styles/admin-table.less";
+@import "./styles/material-override.less";
 
 html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: fade(@black, 25%);
-    background: linear-gradient(to top right, fade(@black, 25%), fade(@white, 25%));
 }
 
-* {
+html {
+    background-color: @color-primary;
+}
+
+body {
+    background: linear-gradient(110deg, fade(@color-background, 65%) 5%, fade(@color-background, 35%) 95%);
     font-family: 'Roboto', sans-serif;
 }
 
-h1, h2, h3, p {
-    color: @black;
+h1, h2, h3 {
+    margin: calc(@base-gap / 2);
+    padding: 0;
+}
+
+h1 {
+    font-size: @font-size-h1;
+    font-weight: 700;
+}
+h2 {
+    font-size: @font-size-h2;
+    font-weight: 700;
+}
+h3 {
+    font-size: @font-size-h3;
+    font-weight: 700;
+}
+p {
+    font-size: @font-size;
+    color: @color-font;
+    line-height: @font-size;
+    font-weight: 400;
+    padding: 0;
+    margin: calc(@base-gap) calc(@base-gap / 2);
+}
+span {
+    font-size: @font-size-mini;
+    color: @color-font;
+    font-weight: 400;
+}
+label {
+    font-size: @font-size-mini;
+    color: @color-font-secondary;
+    font-weight: 700;
+    margin: 0;
+    margin-left: calc(@base-gap * 2);
 }
 
 .mat-tab-label {

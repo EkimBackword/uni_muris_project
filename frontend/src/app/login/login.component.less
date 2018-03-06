@@ -1,16 +1,40 @@
+@import '../../variable.less';
+
 :host {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex: 1 1 auto;
+    height: 100%;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-    background-color: #cfd8dc;
-    border: 1px solid #546e7a;
-    padding: 8px 16px;
-    box-shadow: 1px 1px 4px 1px #37474f;
+    justify-content: flex-start;
+    align-items: stretch;
+    
+    height: 450px;
+    width: 320px;
+    
+    background-color: @color-background-second;
+    border-radius: @base-gap;
+    box-shadow: 0 0 4px 2px @color-background-dark;
+
+    img {
+        width: 320px;
+    }
+
+    h2 {
+        text-align: center;
+        color: @color-font-inverse;
+        background-color: @color-background-dark;
+        margin: 0;
+        padding: calc(@base-gap) calc(@base-gap * 2);
+    }
+    
+    form {
+        padding: 8px 16px;
+    }
 }

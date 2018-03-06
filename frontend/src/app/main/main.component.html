@@ -1,38 +1,28 @@
-<div class="content layout-column flex" *ngIf="profile">
+<header>
+  <h1>
+    Портал университета
+  </h1>
+</header>
 
-  <div class="content__header layout-row layout-align-space-between-center">
-    <div class="layout-row layout-align-start-center">
-      <h3>ФИО: {{profile.FIO}}</h3>
-      <h3>Роль: {{userRolesDesc[profile.Role]}}</h3>
-      <h3 *ngIf="profile.Role == 'student'">
-        Группа: {{profile.GroupID}}
-      </h3>
-      <h3 *ngIf="profile.Role == 'student'">
-        Год начала обучения: {{profile.StartYear}}
-      </h3>
-    </div>
-    <div>
-      <button mat-raised-button class="mat-primary" (click)="LogOut()">Выход</button>
-    </div>
+<div class="profile layout-column layout-align-start-stretch" *ngIf="profile">
+  <div class="layout-column layout-align-start-start flex">
+    <label for="">ФИО:</label>
+    <p>{{profile.FIO}}</p>
+    <label for="">Роль:</label>
+    <p>{{userRolesDesc[profile.Role]}}</p>
+
+    <label for="" *ngIf="profile.Role == 'student'">Группа:</label>
+    <p *ngIf="profile.Role == 'student'">{{profile.GroupID}}</p>
+    <label for="" *ngIf="profile.Role == 'student'">Год начала обучения:</label>
+    <p *ngIf="profile.Role == 'student'">{{profile.StartYear}}</p>
   </div>
-
-<!-- content__body -->
-  <div class="content__body layout-column flex">
-    <div class="flex">
-      <router-outlet></router-outlet>
-    </div>
-    <!-- <button mat-raised-button class="mat-primary" routerLink="/groups">Список групп</button> -->
-  </div>
-<!-- content__body -->
-
-
-
-<!-- content__footer -->
-  <div class="content__footer layout-row layout-align-center-center">
-    <p>Сайт сделан в учебных целях</p>
-  </div>
-<!-- content__footer -->
-
-
-
+  <button mat-raised-button class="mat-primary" (click)="LogOut()">Выход</button>
 </div>
+
+<main class="flex">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="layout-row layout-align-center-center">
+  <p>Сайт сделан в учебных целях</p>
+</footer>
