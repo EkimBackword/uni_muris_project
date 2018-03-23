@@ -11,6 +11,19 @@ import StudentToLesson, { IStudentToLesson, VisitStatusEnum } from '../models/St
 import UserToSubject from '../models/UserToSubject';
 import Lesson from '../models/Lessons';
 
+import * as multer from 'multer';
+
+const storage = multer.diskStorage(
+    {
+        destination: 'files/',
+        filename: function ( req, file, cb ) {
+            // req.body is empty... here is where req.body.new_file_name doesn't exists
+            cb( null, file.originalname );
+        }
+    }
+);
+const uploader = multer({ dest: 'files/', storage: storage });
+
 export class UserController {
     constructor(app: Application) {
         const router = Router();
@@ -23,9 +36,16 @@ export class UserController {
         router.post('/add', this.add);
         router.patch('/edit/:id', requireAdmin, this.edit);
 
+        router.post('/upload-file', isAuth, uploader.single('file'), this.fileUpload);
+
         router.delete('/:id', requireAdmin, this.delete);
 
         app.use('/user', router);
+    }
+
+    private async fileUpload(req: Request, res: Response, next: NextFunction) {
+        console.log(req.file);
+        console.log(req.body);
     }
 
     private async login(req: Request, res: Response) {
