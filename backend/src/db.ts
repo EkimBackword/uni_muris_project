@@ -1,13 +1,14 @@
 import { Sequelize } from 'sequelize-typescript';
+import { DB_CONFIG } from './config/database.config';
 
 const db = new Sequelize({
-    name: 'study-db',
-    username: 'study-db',
-    password: '224657',
-    host: 'db2.itdubna.online',
+    name: DB_CONFIG.name,
+    username: DB_CONFIG.username,
+    password: DB_CONFIG.password,
+    host: DB_CONFIG.host,
     port: 5432,
     dialect: 'postgres',
-    modelPaths: [__dirname + '/models']
+    modelPaths: [__dirname + '/models'],
 });
 
 export default db;

@@ -40,8 +40,10 @@ import { UserController } from './controllers/User.controller';
 import { GroupController } from './controllers/Group.controller';
 import { SubjectController } from './controllers/Subject.controller';
 import { FilesController } from './controllers/Files.controller';
+import { TelegramService } from './telegram/telegram.service';
 
 
+new TelegramService();
 new UserController(app);
 new SubjectController(app);
 new GroupController(app);
