@@ -11,7 +11,7 @@ export class FilesController {
     constructor(app: Application) {
         const router = Router();
         router.get('/upload', this.uploadGet);
-        router.get('/download/:identifier', this.download);
+        router.get('/download/:id', this.download);
         router.post('/upload', this.multipartMiddleware, this.upload);
         router.options('/upload', this.uploadOptions);
 
@@ -50,7 +50,7 @@ export class FilesController {
     }
 
     private async download (req: Request, res: Response) {
-        this.flow.write(req.params.identifier, res);
+        this.flow.write(req.params.id, res);
     }
 
     private async uploadGet (req: Request, res: Response) {
