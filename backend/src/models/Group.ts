@@ -9,6 +9,7 @@ import Lesson, { ILesson } from './Lessons';
 export interface IGroup {
     ID: number;
     Title: string;
+    Year?: number;
 
     Students?: IUser[];
     Lessons?: ILesson[];
@@ -20,6 +21,8 @@ export default class Group extends Model<Group> implements IGroup {
     ID: number;
     @Column({ type: DataType.STRING })
     Title: string;
+    @Column({ type: DataType.INTEGER, defaultValue: 1 })
+    Year?: number;
 
     @HasMany(() => User, 'GroupID')
     Students?: IUser[];

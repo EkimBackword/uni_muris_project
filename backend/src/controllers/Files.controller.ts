@@ -20,7 +20,7 @@ export class FilesController {
 
     private async upload (req: Request, res: Response) {
         this.flow.post(req, async (status: any, filename: any, original_filename: any, identifier: any) => {
-            console.log('POST', status, original_filename, identifier);
+            // console.log('POST', status, original_filename, identifier);
 
             if (status === 'done') {
                 const file: IFile = {
@@ -42,7 +42,7 @@ export class FilesController {
     }
 
     private async uploadOptions (req: Request, res: Response) {
-        console.log('OPTIONS');
+        // console.log('OPTIONS');
         // if (ACCESS_CONTROLL_ALLOW_ORIGIN) {
         // res.header("Access-Control-Allow-Origin", "*");
         // }
@@ -55,7 +55,7 @@ export class FilesController {
 
     private async uploadGet (req: Request, res: Response) {
         this.flow.get(req, (status: any, filename: any, original_filename: any, identifier: any) => {
-            console.log('GET', status);
+            // console.log('GET', status);
 
             // if (ACCESS_CONTROLL_ALLOW_ORIGIN) {
             //     res.header("Access-Control-Allow-Origin", "*");

@@ -44,8 +44,8 @@ export class UserController {
     }
 
     private async fileUpload(req: Request, res: Response, next: NextFunction) {
-        console.log(req.file);
-        console.log(req.body);
+        // console.log(req.file);
+        // console.log(req.body);
     }
 
     private async login(req: Request, res: Response) {
@@ -109,13 +109,11 @@ export class UserController {
             };
             if (data.Role === UserRoles.student) {
 
-                if ((typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
+                if (typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) {
                     return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
                 }
 
                 data.GroupID = req.body.GroupID;
-                data.StartYear = req.body.StartYear;
-
             }
 
             let newUser = new User(data);
@@ -161,12 +159,11 @@ export class UserController {
 
             if (CurrentUser.Role === UserRoles.student) {
 
-                if ((typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) && (typeof req.body.StartYear === 'undefined' || req.body.StartYear === null)) {
+                if (typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) {
                     return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
                 }
 
                 CurrentUser.GroupID = req.body.GroupID;
-                CurrentUser.StartYear = req.body.StartYear;
             }
 
             await CurrentUser.save();

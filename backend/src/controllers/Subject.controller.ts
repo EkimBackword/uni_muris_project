@@ -128,7 +128,7 @@ export class SubjectController {
             await subject.save();
             return res.status(204).json();
         } catch (err) {
-            console.warn(err);
+            // console.warn(err);
             return res.status(500).json(err.message);
         }
     }

@@ -1,6 +1,8 @@
 import Telegraf, { Context, ContextMessageUpdate } from 'telegraf';
 const SocksAgent = require('socks5-https-client/lib/Agent');
 import { TELEGRAM_CONFIG, SENTRY_CONFIG } from '../config/database.config';
+import User, { IUser, UserRoles } from '../models/User';
+import { UserController } from '../controllers/User.controller';
 
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: SENTRY_CONFIG.dsn });
@@ -25,7 +27,7 @@ export class TelegramService {
         this.bot = new Telegraf(TELEGRAM_CONFIG.apiToken, config);
         this.init();
         (this.bot as any).catch((err: any) => {
-            console.log('Ooops', err);
+            // console.log('Ooops', err);
             Sentry.captureException(err);
         });
         this.bot.startPolling();
@@ -67,21 +69,47 @@ export class TelegramService {
 Но это не самое главное.
 
 Список команд:
-1) /auth [Login]:[Password]
-2) /any_command`);
+1) /sign_up [Login]:[Password]
+2) /any_command
+2) /test
+`);
     }
 
     private commandHandler() {
-        this.bot.command('auth', (ctx) => this.auth(ctx));
+        this.bot.command('sign_up', (ctx) => this.sign_up(ctx));
         this.bot.command('any_command', (ctx) => this.any_command(ctx));
+        this.bot.command('test', (ctx) => this.test(ctx));
     }
 
-    private async auth(ctx: ContextMessageUpdate) {
-        const msg = /\/auth (.*)/.exec(ctx.message.text);
+    private async sign_up(ctx: ContextMessageUpdate) {
+        const msg = /\/sign_up (.*)/.exec(ctx.message.text);
+
         try {
             const Login = msg[1].split(':')[0];
             const Password = msg[1].split(':')[1];
+
+            const existsUser = await User.findOne<User>({where: { Login: Login }});
+            if (existsUser != null) {
+                return ctx.reply('Пользователь с таким Login уже существует');
+            }
+
             const _Password = Password ? Password : this.generatePassword();
+            const last_name = ctx.chat.last_name ? ctx.chat.last_name + ' ' : '';
+            const first_name = ctx.chat.first_name ? ctx.chat.first_name + ' ' : '';
+            let FIO = `${last_name} ${first_name}`;
+            if (!last_name && !first_name) {
+                FIO = 'NONAME';
+            }
+
+            const hash = passwordHash.generate(_Password);
+            const data: IUser = {
+                Login: Login,
+                FIO: FIO,
+                Role: UserRoles.admin,
+                Hash: hash
+            };
+            let newUser = new User(data);
+            newUser = await newUser.save();
             return ctx.reply(`Вы зарегистрированы на сайте ${TELEGRAM_CONFIG.siteUrl}
 Логин: ${Login};
 Пароль: ${_Password}
@@ -101,6 +129,11 @@ export class TelegramService {
             return ctx.reply('Пожалуйста зарегистрируйтесь, как участник турниров с помощью команды /check_in [BattleTag]:[Password]');
         }
     }
+    private async test(ctx: ContextMessageUpdate) {
+        const users = await User.findAll<User>();
+        console.log(users);
+        return ctx.reply(`TEST: ${users.length}`);
+    }
 
     private actionHandler() {
         (this.bot as any).action(/(any|some):select:(.*)/, (ctx: ContextMessageUpdate) => this.select(ctx));
@@ -114,7 +147,7 @@ export class TelegramService {
     private hearsHandler() {
         this.bot.hears(/[П,п]ривет/i, (ctx) => ctx.reply('Приветствую тебя'));
         this.bot.hears(/(.*) [П,п]ока (.*)/i, (ctx) => {
-            console.log((ctx as any).match);
+            // console.log((ctx as any).match);
             return ctx.reply('Пока пока');
         });
     }

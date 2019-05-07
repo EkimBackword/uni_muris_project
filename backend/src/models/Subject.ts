@@ -6,12 +6,17 @@ import { Request } from 'express';
 import User, { IUser } from './User';
 import UserToSubject from './UserToSubject';
 import Lesson, { ILesson } from './Lessons';
+import StudentToSubject from './StudentToSubject';
 
 export interface ISubject {
     ID?: number;
     Title: string;
+    Description?: string;
+    ImgUrl?: string;
+    IsFree?: boolean;
 
     Teachers?: IUser[];
+    Students?: IUser[];
     Lessons?: ILesson[];
 }
 
@@ -21,9 +26,17 @@ export default class Subject extends Model<Subject> implements ISubject {
     ID: number;
     @Column({ type: DataType.STRING })
     Title: string;
+    @Column({ type: DataType.STRING, allowNull: true })
+    Description: string;
+    @Column({ type: DataType.STRING, allowNull: true })
+    ImgUrl: string;
+    @Column({ type: DataType.BOOLEAN, defaultValue: true })
+    IsFree: boolean;
 
     @BelongsToMany(() => User, () => UserToSubject)
     Teachers?: IUser[];
+    @BelongsToMany(() => User, () => StudentToSubject)
+    Students?: IUser[];
     @HasMany(() => Lesson, 'SubjectID')
     Lessons?: ILesson[];
 

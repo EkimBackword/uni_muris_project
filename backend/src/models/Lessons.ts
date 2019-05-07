@@ -10,11 +10,11 @@ import File, { IFile } from './Files';
 
 export interface ILesson {
     ID?: number;
-    SubjectID: number;
     GroupID: number;
-    Date: Date;
     Title: string;
     Description: string;
+    SubjectID: number;
+    Date: Date;
 
     Group?: IGroup;
     Subject?: ISubject;

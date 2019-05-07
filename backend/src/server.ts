@@ -57,8 +57,8 @@ db.authenticate()
          * Start Express server.
          */
         app.listen(port, () => {
-            console.log(('  App is running at http://localhost:%d'), port);
-            console.log('  Press CTRL-C to stop\n');
+            // console.log(('  App is running at http://localhost:%d'), port);
+            // console.log('  Press CTRL-C to stop\n');
         });
     });
 

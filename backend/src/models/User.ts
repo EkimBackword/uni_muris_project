@@ -7,6 +7,7 @@ import Subject, { ISubject } from './Subject';
 import UserToSubject from './UserToSubject';
 import Group, { IGroup } from './Group';
 import StudentToLesson, { IStudentToLesson } from './StudentToLesson';
+import StudentToSubject from './StudentToSubject';
 
 export interface IUser {
     ID?: number;
@@ -14,11 +15,14 @@ export interface IUser {
     FIO: string;
     Role: UserRoles;
     Hash: string;
-    StartYear?: number;
     GroupID?: number;
+
+    ImgUrl?: string;
+    TelegramID?: number;
 
     Group?: IGroup;
     Subjects?: ISubject[];
+    SubjectsForStudy?: ISubject[];
     LessonsInfo?: IStudentToLesson[];
 }
 
@@ -41,15 +45,20 @@ export default class User extends Model<User> implements IUser {
     @ForeignKey(() => Group)
     @Column({ type: DataType.INTEGER, allowNull: true })
     GroupID?: number;
-    @Column({ type: DataType.INTEGER, allowNull: true })
-    StartYear?: number;
     @Column({ type: DataType.STRING })
     Hash: string;
+
+    @Column({ type: DataType.STRING, allowNull: true })
+    ImgUrl?: string;
+    @Column({ type: DataType.INTEGER, allowNull: true })
+    TelegramID?: number;
 
     @BelongsTo(() => Group, 'GroupID')
     Group?: IGroup;
     @BelongsToMany(() => Subject, () => UserToSubject)
     Subjects?: ISubject[];
+    @BelongsToMany(() => Subject, () => StudentToSubject)
+    SubjectsForStudy?: ISubject[];
 
     @HasMany(() => StudentToLesson, 'UserID')
     LessonsInfo?: IStudentToLesson[];
