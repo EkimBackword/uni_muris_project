@@ -39,4 +39,14 @@ export class MainComponent implements OnInit {
     await this.userService.GetUser();
   }
 
+  async handleFileInput(files: FileList) {
+    for (let i = 0; i < files.length; i++) {
+      try {
+        await this.userService.uploadFile(files.item(i));
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+  }
+
 }

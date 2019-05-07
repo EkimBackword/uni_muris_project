@@ -1,21 +1,21 @@
-import * as supertest from "supertest";
+import * as supertest from 'supertest';
 import {} from 'jest';
 
-const request = supertest("http://localhost:35123/user");
-let options: any = {
+const request = supertest('http://localhost:30123/user');
+const options: any = {
     userInfo: {
         ID: null
     }
 };
 
-describe("Добавление нового пользователя", () => {
-    it("204 (Добавить в БД)", (done) => {
-      request.post("/add")
+describe('Добавление нового пользователя', () => {
+    it('204 (Добавить в БД)', (done) => {
+      request.post('/add')
         .send({
-            Login: "root",
-            Password: "test123",
-            FIO: "Тестовый Тест Тестович",
-            Role: "admin"
+            Login: 'root',
+            Password: 'test123',
+            FIO: 'Тестовый Тест Тестович',
+            Role: 'admin'
         })
         .expect(204, done);
     });

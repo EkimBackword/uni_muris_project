@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  backendUrl: 'http://localhost:35123'
+  backendUrl: 'https://api.study.itdubna.online'
 };

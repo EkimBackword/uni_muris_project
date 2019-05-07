@@ -16,6 +16,11 @@
     <label for="" *ngIf="profile.Role == 'student'">Год начала обучения:</label>
     <p *ngIf="profile.Role == 'student'">{{profile.StartYear}}</p>
   </div>
+  <div class="form-group">
+    <label for="file">Загрузить файл</label>
+    <input type="file" id="file"
+           (change)="handleFileInput($event.target.files)">
+  </div>
   <button mat-raised-button class="mat-primary" (click)="LogOut()">Выход</button>
 </div>
 

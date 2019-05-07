@@ -24,6 +24,12 @@ export class UserService {
         }
     }
 
+    public async uploadFile(fileToUpload: File) {
+        const formData: FormData = new FormData();
+        formData.append('file', fileToUpload, fileToUpload.name);
+        return this.http.post(`${environment.backendUrl}/user/upload-file`, formData).toPromise();
+    }
+
     public async LogIn(Login, Password) {
         try {
             return await this.http.post<IUser>(`${environment.backendUrl}/user/login`, { Login, Password }).toPromise();

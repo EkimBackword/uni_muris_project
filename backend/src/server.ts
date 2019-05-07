@@ -12,7 +12,7 @@ import db from './db';
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const url = 'http://localhost';
-const port = 35123;
+const port = 30123;
 
 /**
  * Create Express server.
