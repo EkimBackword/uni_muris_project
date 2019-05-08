@@ -3,7 +3,6 @@ import {
     UpdatedAt, DataType, Validate, DefaultScope, BelongsToMany, ForeignKey, BelongsTo
 } from 'sequelize-typescript';
 import { Request } from 'express';
-import Group, { IGroup } from './Group';
 import Subject, { ISubject } from './Subject';
 import StudentToLesson, { IStudentToLesson } from './StudentToLesson';
 import File, { IFile } from './Files';
@@ -27,7 +26,6 @@ export default class Lesson extends Model<Lesson> implements ILesson {
     @ForeignKey(() => Subject)
     @Column({ type: DataType.INTEGER })
     SubjectID: number;
-    @ForeignKey(() => Group)
     @Column({ type: DataType.STRING })
     Title: string;
     @Column({ type: DataType.STRING({length: 1024}) })

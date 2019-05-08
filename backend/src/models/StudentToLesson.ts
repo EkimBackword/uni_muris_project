@@ -3,8 +3,6 @@ import {
     UpdatedAt, DataType, Validate, DefaultScope, BelongsToMany, ForeignKey, BelongsTo
 } from 'sequelize-typescript';
 import { Request } from 'express';
-import Group, { IGroup } from './Group';
-import Subject, { ISubject } from './Subject';
 import User, { IUser } from './User';
 import Lesson, { ILesson } from './Lessons';
 import File, { IFile } from './Files';
