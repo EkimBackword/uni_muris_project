@@ -8,6 +8,7 @@ import UserToSubject from './UserToSubject';
 import Group, { IGroup } from './Group';
 import StudentToLesson, { IStudentToLesson } from './StudentToLesson';
 import StudentToSubject from './StudentToSubject';
+import UserToDialogs, { IUserToDialogs } from './UserToDialogs';
 
 export interface IUser {
     ID?: number;
@@ -24,6 +25,7 @@ export interface IUser {
     Subjects?: ISubject[];
     SubjectsForStudy?: ISubject[];
     LessonsInfo?: IStudentToLesson[];
+    Dialogs?: IUserToDialogs[];
 }
 
 export enum UserRoles {
@@ -53,7 +55,7 @@ export default class User extends Model<User> implements IUser {
     @Column({ type: DataType.INTEGER, allowNull: true })
     TelegramID?: number;
 
-    @BelongsTo(() => Group)
+    @BelongsTo(() => Group, 'GroupID')
     Group?: IGroup;
     @BelongsToMany(() => Subject, () => UserToSubject)
     Subjects?: ISubject[];
@@ -62,6 +64,8 @@ export default class User extends Model<User> implements IUser {
 
     @HasMany(() => StudentToLesson, 'UserID')
     LessonsInfo?: IStudentToLesson[];
+    @HasMany(() => UserToDialogs, 'UserID')
+    Dialogs?: IUserToDialogs[];
 
     /**
      * @description Проверка полной модели пришедшей в запросе

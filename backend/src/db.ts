@@ -9,7 +9,8 @@ const db = new Sequelize({
     port: 5432,
     dialect: 'postgres',
     modelPaths: [__dirname + '/models'],
-    logging: false
+    logging: false,
+    operatorsAliases: false
 });
 
 export default db;
