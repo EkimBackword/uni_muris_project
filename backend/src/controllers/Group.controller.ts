@@ -58,18 +58,9 @@ export class GroupController {
         }
     }
 
+    // TODO: Убрать этот эндпоинт
     private async getListBySubjectID (req: Request, res: Response) {
-        const SearchID: number = parseInt(req.params.subject_id);
-        try {
-            const lessonList = await Lesson.findAll<Lesson>({ where: { SubjectID: SearchID}, group: 'GroupID', include: [ Group ] });
-            const result = lessonList.map(l => {
-                const lesson: ILesson = l.toJSON();
-                return lesson.Group;
-            });
-            return res.json(result);
-        } catch (err) {
-            return res.status(500).json(err);
-        }
+        return res.status(500).json({ msg: 'deprecated' });
     }
 
     private async edit (req: Request, res: Response) {
@@ -93,14 +84,13 @@ export class GroupController {
     private async delete (req: Request, res: Response) {
         const id = req.params.id;
         const group = await Group.findById<Group>(id, {include: [User, Lesson]});
-        group.Students.forEach(async (s: User) => {
-            s.GroupID = null;
-            await s.save();
-        });
-        group.Lessons.forEach(async (l: any) => {
-            l.GroupID = null;
-            await l.save();
-        });
+
+        // TODO: проверить SET NULL
+        // group.Students.forEach(async (s: User) => {
+        //     s.GroupID = null;
+        //     await s.save();
+        // });
+
         try {
             await group.destroy();
             return res.status(204).json();

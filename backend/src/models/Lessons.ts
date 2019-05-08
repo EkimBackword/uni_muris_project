@@ -10,15 +10,12 @@ import File, { IFile } from './Files';
 
 export interface ILesson {
     ID?: number;
-    GroupID: number;
     Title: string;
     Description: string;
     SubjectID: number;
     Date: Date;
 
-    Group?: IGroup;
     Subject?: ISubject;
-
     StudentsInfo?: IStudentToLesson[];
     Files?: IFile[];
 }
@@ -31,8 +28,6 @@ export default class Lesson extends Model<Lesson> implements ILesson {
     @Column({ type: DataType.INTEGER })
     SubjectID: number;
     @ForeignKey(() => Group)
-    @Column({ type: DataType.INTEGER })
-    GroupID: number;
     @Column({ type: DataType.STRING })
     Title: string;
     @Column({ type: DataType.STRING({length: 1024}) })
@@ -40,8 +35,6 @@ export default class Lesson extends Model<Lesson> implements ILesson {
     @Column({ type: DataType.DATE })
     Date: Date;
 
-    @BelongsTo(() => Group, 'GroupID')
-    Group?: IGroup;
     @BelongsTo(() => Subject, 'SubjectID')
     Subject?: ISubject;
 
@@ -57,7 +50,6 @@ export default class Lesson extends Model<Lesson> implements ILesson {
      */
     static async checkFullModel(req: Request, withoutPassword: boolean = false ) {
         req.assert('SubjectID', 'SubjectID не может быть пустым').notEmpty();
-        req.assert('GroupID', 'GroupID не может быть пустым').notEmpty();
         req.assert('Title', 'Title не может быть пустым').notEmpty();
         req.assert('Description', 'Description не может быть пустым').notEmpty();
         req.assert('Date', 'Date не может быть пустым').notEmpty();

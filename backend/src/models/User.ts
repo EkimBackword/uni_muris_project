@@ -53,7 +53,7 @@ export default class User extends Model<User> implements IUser {
     @Column({ type: DataType.INTEGER, allowNull: true })
     TelegramID?: number;
 
-    @BelongsTo(() => Group, 'GroupID')
+    @BelongsTo(() => Group)
     Group?: IGroup;
     @BelongsToMany(() => Subject, () => UserToSubject)
     Subjects?: ISubject[];

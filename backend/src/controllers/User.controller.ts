@@ -108,34 +108,32 @@ export class UserController {
                 Hash: hash
             };
             if (data.Role === UserRoles.student) {
-
-                if (typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) {
-                    return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
+                if (!req.body.GroupID) {
+                    return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы!'});
                 }
-
                 data.GroupID = req.body.GroupID;
             }
 
             let newUser = new User(data);
             newUser = await newUser.save();
-
-            if (data.Role === UserRoles.student) {
-                const lessons = await Lesson.findAll<Lesson>({where: {GroupID: data.GroupID}});
-                lessons.forEach( async lesson => {
-                    const StudInfo: IStudentToLesson = {
-                        Description: '',
-                        UserID: newUser.ID,
-                        LessonID: lesson.ID,
-                        VisitStatus: VisitStatusEnum.unknown,
-                        Score: 0,
-                    };
-                    await new StudentToLesson(StudInfo).save();
-                });
-            }
             return res.status(204).json();
         } catch (err) {
             return res.status(500).json(err);
         }
+    }
+
+    protected async createStudentToLessonLink(userID: number, subjectID: number) {
+        const lessons = await Lesson.findAll<Lesson>({where: {SubjectID: subjectID}});
+        lessons.forEach( async lesson => {
+            const StudInfo: IStudentToLesson = {
+                Description: '',
+                UserID: userID,
+                LessonID: lesson.ID,
+                VisitStatus: VisitStatusEnum.unknown,
+                Score: 0,
+            };
+            await new StudentToLesson(StudInfo).save();
+        });
     }
 
     private async edit(req: Request, res: Response) {
@@ -158,11 +156,9 @@ export class UserController {
             }
 
             if (CurrentUser.Role === UserRoles.student) {
-
-                if (typeof req.body.GroupID === 'undefined' || req.body.GroupID === null) {
-                    return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы и год поступления'});
+                if (!req.body.GroupID) {
+                    return res.status(400).json({ message: 'Пользователь с ролью СТУДЕНТ должен иметь номер группы'});
                 }
-
                 CurrentUser.GroupID = req.body.GroupID;
             }
 

@@ -27,15 +27,14 @@ export class LessonController {
         try {
             const data: ILesson = {
                 SubjectID: req.body.SubjectID,
-                GroupID: req.body.GroupID,
                 Title: req.body.Title,
                 Description: req.body.Description,
                 Date: req.body.Date,
             };
             let newLesson = new Lesson(data);
             newLesson = await newLesson.save();
-            const users = await User.findAll<User>({where: { GroupID: req.body.GroupID}});
-            users.forEach( async student => {
+            const subjects = await Subject.findById<Subject>(req.body.SubjectID, { include: [ User ] });
+            subjects.Students.forEach( async student => {
                 const StudInfo: IStudentToLesson = {
                     Description: '',
                     UserID: student.ID,
@@ -72,10 +71,6 @@ export class LessonController {
         if (subjectID !== void 0) {
             WHERE['SubjectID'] = subjectID;
         }
-        const groupID = req.query.groupID;
-        if (groupID !== void 0) {
-            WHERE['GroupID'] = groupID;
-        }
         try {
             const withStudInfo = req.query.withStudInfo;
             const list = withStudInfo === void 0 ?
@@ -104,7 +99,6 @@ export class LessonController {
                 return res.status(404).json({ message: 'Такого предмета не существует'});
             }
             lesson.SubjectID = req.body.SubjectID;
-            lesson.GroupID = req.body.GroupID;
             lesson.Title = req.body.Title;
             lesson.Description = req.body.Description;
             await lesson.save();

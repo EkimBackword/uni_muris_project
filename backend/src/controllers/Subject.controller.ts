@@ -72,18 +72,9 @@ export class SubjectController {
         }
     }
 
-    private async getListByGroupID (req: Request, res: Response) {
-        const SearchID: number = parseInt(req.params.group_id);
-        try {
-            const lessonList = await Lesson.findAll<Lesson>({ attributes: ['Subject.ID', 'Subject.Title'], where: { GroupID: SearchID }, include: [ Subject ], group: ['Subject.ID'] });
-            const result = lessonList.map(l => {
-                const lesson: ILesson = l.toJSON();
-                return lesson.Subject;
-            });
-            return res.json(result);
-        } catch (err) {
-            return res.status(500).json(err);
-        }
+    // TODO: Убрать этот эндпоинт
+    private async getListByGroupID(req: Request, res: Response) {
+        return res.status(500).json({ msg: 'deprecated' });
     }
 
     private async edit (req: Request, res: Response) {

@@ -9,10 +9,10 @@ import Lesson, { ILesson } from './Lessons';
 export interface IGroup {
     ID: number;
     Title: string;
+    Number?: number;
     Year?: number;
 
     Students?: IUser[];
-    Lessons?: ILesson[];
 }
 
 @Table
@@ -21,13 +21,13 @@ export default class Group extends Model<Group> implements IGroup {
     ID: number;
     @Column({ type: DataType.STRING })
     Title: string;
+    @Column({ type: DataType.INTEGER, defaultValue: 0 })
+    Number?: number;
     @Column({ type: DataType.INTEGER, defaultValue: 1 })
     Year?: number;
 
-    @HasMany(() => User, 'GroupID')
+    @HasMany(() => User, { foreignKey: 'GroupID', onDelete: 'SET NULL' })
     Students?: IUser[];
-    @HasMany(() => Lesson, 'GroupID')
-    Lessons?: ILesson[];
 
     /**
      * @description Проверка полной модели пришедшей в запросе
