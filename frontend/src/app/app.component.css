@@ -1,6 +1,0 @@
-:host {
-    display: block;
-    height: calc(100% - 16px);
-    width: calc(100% - 16px);
-    padding: 8px;
-}

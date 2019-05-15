@@ -34,6 +34,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { UploadComponent } from './main/uni-page/upload/upload.component';
 import { SubjectStatComponent } from './main/uni-page/stats/subject-stat/subject-stat.component';
 import { SubjectListComponent } from './main/uni-page/stats/subject-list/subject-list.component';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { SubjectListComponent } from './main/uni-page/stats/subject-list/subject
     LoginComponent,
     NotFoundComponent,
     // LessonComponent,
+    HomeComponent,
     MainComponent,
     UploadComponent,
 

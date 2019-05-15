@@ -10,8 +10,10 @@ import { UniPageComponent } from './main/uni-page/uni-page.component';
 import { AdminSubjectComponent } from './main/admin-page/subject/subject.component';
 import { AdminUserComponent } from './main/admin-page/user/user.component';
 import { AdminGroupComponent } from './main/admin-page/group/group.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'main',
     component: MainComponent,

@@ -9,13 +9,12 @@
     grid-template-columns: 1fr 2fr 2fr;
     grid-template-rows: 60px repeat(3, 1fr) 60px;
     grid-gap: calc(@base-gap * 3);
-    grid-template-areas: 
-        "header header header"
-        "profile main main"
-        "profile main main"
-        ". main main"
-        "footer footer footer"
-
+    grid-template-areas:
+        "main main main"
+        "main main main"
+        "main main main"
+        "main main main"
+        "main main main"
 }
 
 header, footer {
@@ -39,7 +38,7 @@ main {
     grid-area: main;
     background-color: @color-background;
     // padding: calc(@base-gap * 2) calc(@base-gap * 4);
-    box-shadow: 0 0 2px 1px @color-base;
+    // box-shadow: 0 0 2px 1px @color-base;
     z-index: 500;
 }
 

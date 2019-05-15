@@ -1,33 +1,3 @@
-<header>
-  <h1>
-    Портал университета
-  </h1>
-</header>
-
-<div class="profile layout-column layout-align-start-stretch" *ngIf="profile">
-  <div class="layout-column layout-align-start-start flex">
-    <label for="">ФИО:</label>
-    <p>{{profile.FIO}}</p>
-    <label for="">Роль:</label>
-    <p>{{userRolesDesc[profile.Role]}}</p>
-
-    <label for="" *ngIf="profile.Role == 'student'">Группа:</label>
-    <p *ngIf="profile.Role == 'student'">{{profile.GroupID}}</p>
-    <label for="" *ngIf="profile.Role == 'student'">Год начала обучения:</label>
-    <p *ngIf="profile.Role == 'student'">{{profile.StartYear}}</p>
-  </div>
-  <div class="form-group">
-    <label for="file">Загрузить файл</label>
-    <input type="file" id="file"
-           (change)="handleFileInput($event.target.files)">
-  </div>
-  <button mat-raised-button class="mat-primary" (click)="LogOut()">Выход</button>
-</div>
-
 <main class="flex">
   <router-outlet></router-outlet>
 </main>
-
-<footer class="layout-row layout-align-center-center">
-  <p>Сайт сделан в учебных целях</p>
-</footer>

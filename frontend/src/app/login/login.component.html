@@ -4,7 +4,7 @@
   <form action="" class="layout-column" (submit)="Login()">
     <mat-form-field>
       <input matInput type="text"
-          placeholder="Логин" 
+          placeholder="Логин"
           [(ngModel)]="login"
           [ngModelOptions]="{standalone: true}"
           required
@@ -12,7 +12,7 @@
     </mat-form-field>
     <mat-form-field>
       <input matInput type="password"
-          placeholder="Пароль" 
+          placeholder="Пароль"
           [(ngModel)]="password"
           [ngModelOptions]="{standalone: true}"
           required
@@ -20,5 +20,6 @@
     </mat-form-field>
     <!-- <button>Войти</button> -->
     <button mat-raised-button class="mat-primary">Войти</button>
+    <a routerLink="/" style="align-self: center;">На главную</a>
   </form>
 </div>

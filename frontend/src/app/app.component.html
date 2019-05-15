@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<div class="header">header</div>
+<div class="main">
+  <div class="menu" *ngIf="!isAuth">
+    <div class="menu_element" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      home
+    </div>
+    <div class="menu_element" routerLink="/main" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      main
+    </div>
+    <div class="menu_element" (click)="LogOut()" *ngIf="user">
+      logout
+    </div>
+  </div>
+  <div class="body" [class.body_auth]="isAuth">
+    <router-outlet></router-outlet>
+  </div>
+</div>

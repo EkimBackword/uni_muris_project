@@ -27,9 +27,9 @@ export class AppInterceptor implements HttpInterceptor {
             (err: any) => {
                 if (err instanceof HttpErrorResponse) {
                     if (err.status === 401) {
-                        this.zone.run(() => {
-                            this.router.navigate(['/login']);
-                        });
+                        // this.zone.run(() => {
+                        //     this.router.navigate(['/login']);
+                        // });
                     }
                     // console.log('This is HttpErrorResponse');
                 }

@@ -1,0 +1,87 @@
+@import '../variable.less';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  background-color: @color-primary;
+  color: #fff;
+  height: 80px;
+  padding: 8px;
+  border-radius: 0 0 6px 6px;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  height: 100%;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: @color-background;
+  padding: 4px;
+  margin: 4px;
+  width: 80px;
+  border-radius: 4px;
+  border: 1px solid @color-primary;
+
+  .menu_element {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    height: 64px;
+    width: 64px;
+    cursor: pointer;
+
+    &.active {
+      background-color: @color-background-second;
+    }
+    &:hover {
+      background-color: fade(@color-background-second, 50%);
+    }
+  }
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  background-color: @color-background;
+  padding: 4px;
+  margin: 4px;
+  width: calc(100% - 80px);
+  border-radius: 4px;
+  border: 1px solid @color-primary;
+
+  &.body_auth {
+    background-color: transparent;
+    width: 100%;
+    border-radius: 0px;
+    border: none
+  }
+}
+
