@@ -1,13 +1,79 @@
-<div class="header">header</div>
+<div class="header">
+  <div class="header_icon">
+    <img src="/assets/img/logo-64x64.png" alt="Logo">
+    <img src="/assets/img/name-fff.png" alt="Dubuni">
+  </div>
+  <div class="header_user" *ngIf="user">
+    <object type="image/svg+xml" data="/assets/img/user.svg" width="64" height="64">
+      <img src="/assets/img/user.png" width="64" height="64" alt="image format png" />
+    </object>
+    <div class="header_user_info">
+      <h1>{{user.FIO}}</h1>
+      <h2>{{userRolesDesc[user.Role]}}</h2>
+    </div>
+  </div>
+  <div class="header_user header_user__login" *ngIf="!isAuth && !user" (click)="LogIn()">
+    <object type="image/svg+xml" data="/assets/img/login.svg" width="64" height="64" style="pointer-events: none;">
+      <img src="/assets/img/login.png" width="64" height="64" alt="image format png" />
+    </object>
+    <div class="header_user_info">
+      <h1>Добро пожаловаться</h1>
+      <h2>Гость</h2>
+    </div>
+  </div>
+</div>
 <div class="main">
   <div class="menu" *ngIf="!isAuth">
-    <div class="menu_element" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-      home
+    <div class="menu_list">
+      <div class="menu_element"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        home
+      </div>
+      <div class="menu_element"
+        *ngIf="user && (user.Role === 'admin' || user.Role === 'teacher')"
+        routerLink="/news-admin"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        news-admin
+      </div>
+      <div class="menu_element"
+        routerLink="/schedule"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        schedule
+      </div>
+      <div class="menu_element"
+        *ngIf="user"
+        routerLink="/courses"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        courses
+      </div>
+      <div class="menu_element"
+        *ngIf="user"
+        routerLink="/main"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        main
+      </div>
+      <div class="menu_element"
+        *ngIf="user"
+        routerLink="/dialogs"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        dialogs
+      </div>
+      <div class="menu_element"
+        *ngIf="user && (user.Role === 'admin' || user.Role === 'teacher')"
+        routerLink="/telegram"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+        telegram
+      </div>
     </div>
-    <div class="menu_element" routerLink="/main" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-      main
-    </div>
-    <div class="menu_element" (click)="LogOut()" *ngIf="user">
+    <div class="menu_element menu_element__logout" (click)="LogOut()" *ngIf="user">
       logout
     </div>
   </div>

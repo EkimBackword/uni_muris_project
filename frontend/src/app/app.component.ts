@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user-service.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { IUser } from '../models';
+import { IUser, UserRolesDesc } from '../models';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   title = 'app';
   user: IUser;
   isAuth: boolean;
+  userRolesDesc = UserRolesDesc;
 
   constructor(
     private userService: UserService,
@@ -36,5 +37,9 @@ export class AppComponent implements OnInit {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async LogIn() {
+    this.router.navigate(['/login']);
   }
 }

@@ -13,8 +13,8 @@
 
 .header {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: stretch;
 
   background-color: @color-primary;
@@ -22,7 +22,51 @@
   height: 80px;
   padding: 8px;
   border-radius: 0 0 6px 6px;
+
+  .header_icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .header_user {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 300px;
+
+    .header_user_info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+
+      svg {
+        stroke: #fff;
+      }
+      h1 {
+        font-size: 18px;
+        color: fade(@color-font-inverse, 100%)
+      }
+      h2 {
+        font-size: 14px;
+        color: fade(@color-font-inverse, 68%)
+      }
+    }
+
+    &.header_user__login {
+      cursor: pointer;
+      transition: all .25s linear;
+
+      &:hover {
+        background-color: fade(@color-background, 8%);
+      }
+    }
+  }
 }
+
 
 .main {
   display: flex;
@@ -35,7 +79,7 @@
 .menu {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 
   background-color: @color-background;
@@ -44,6 +88,13 @@
   width: 80px;
   border-radius: 4px;
   border: 1px solid @color-primary;
+
+  .menu_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
 
   .menu_element {
     display: flex;
@@ -60,6 +111,16 @@
     }
     &:hover {
       background-color: fade(@color-background-second, 50%);
+    }
+
+    &.menu_element__logout {
+      background-color: @color-warn;
+      color: @color-font-inverse;
+
+      &:hover {
+        background-color: lighten(@color-warn, 8%);
+        // color: @color-font-inverse-ghost;
+      }
     }
   }
 }

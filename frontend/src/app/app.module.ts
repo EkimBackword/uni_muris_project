@@ -18,7 +18,7 @@ import { UserService } from '../services/user-service.service';
 import { MainComponent } from './main/main.component';
 import { AdminPageComponent } from './main/admin-page/admin-page.component';
 import { AdminUserComponent, AdminUserDialog } from './main/admin-page/user/user.component';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './shared/material.module';
 import { AdminSubjectComponent, AdminSubjectDialog } from './main/admin-page/subject/subject.component';
 import { AdminGroupDialog, AdminGroupComponent } from './main/admin-page/group/group.component';
 
@@ -35,6 +35,11 @@ import { UploadComponent } from './main/uni-page/upload/upload.component';
 import { SubjectStatComponent } from './main/uni-page/stats/subject-stat/subject-stat.component';
 import { SubjectListComponent } from './main/uni-page/stats/subject-list/subject-list.component';
 import { HomeComponent } from './home/home.component';
+import { NewsAdminComponent } from './news-admin/news-admin.component';
+import { CoursesComponent } from './courses/courses.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { DialogsComponent } from './dialogs/dialogs.component';
+import { TelegramComponent } from './telegram/telegram.component';
 
 
 @NgModule({
@@ -42,7 +47,6 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     LoginComponent,
     NotFoundComponent,
-    // LessonComponent,
     HomeComponent,
     MainComponent,
     UploadComponent,
@@ -64,7 +68,12 @@ import { HomeComponent } from './home/home.component';
     AdminUserDialog,
     AdminSubjectDialog,
     AdminGroupDialog,
-    AddLessonDialog
+    AddLessonDialog,
+    NewsAdminComponent,
+    CoursesComponent,
+    ScheduleComponent,
+    DialogsComponent,
+    TelegramComponent
   ],
   imports: [
     BrowserModule,
