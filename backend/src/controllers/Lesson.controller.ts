@@ -33,7 +33,7 @@ export class LessonController {
             };
             let newLesson = new Lesson(data);
             newLesson = await newLesson.save();
-            const subjects = await Subject.findById<Subject>(req.body.SubjectID, { include: [ User ] });
+            const subjects = await Subject.findByPk<Subject>(req.body.SubjectID, { include: [ User ] });
             subjects.Students.forEach( async student => {
                 const StudInfo: IStudentToLesson = {
                     Description: '',
@@ -53,7 +53,7 @@ export class LessonController {
     private async getLesson (req: Request, res: Response) {
         try {
             const ID: number = parseInt(req.params.id);
-            const lesson = await Lesson.findById<Lesson>(ID, { include: [
+            const lesson = await Lesson.findByPk<Lesson>(ID, { include: [
                 {
                     model: StudentToLesson,
                     include: [ User ]
@@ -94,7 +94,7 @@ export class LessonController {
 
         try {
             const id: string = req.params.id;
-            const lesson = await Lesson.findById<Lesson>(id);
+            const lesson = await Lesson.findByPk<Lesson>(id);
             if (!lesson || lesson === null) {
                 return res.status(404).json({ message: 'Такого предмета не существует'});
             }
@@ -111,7 +111,7 @@ export class LessonController {
     private async delete (req: Request, res: Response) {
         try {
             const id = req.params.id;
-            const lesson = await Lesson.findById<Lesson>(id);
+            const lesson = await Lesson.findByPk<Lesson>(id);
             await lesson.destroy();
             return res.status(204).json();
         } catch (err) {

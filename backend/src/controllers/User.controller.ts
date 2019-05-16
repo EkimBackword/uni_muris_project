@@ -79,7 +79,7 @@ export class UserController {
             includes.push(StudentToLesson);
         }
         if (includes.length === 0) return res.json(req.user);
-        const currentUser: User = await User.findById<User>(req.user.ID, { include: includes });
+        const currentUser: User = await User.findByPk<User>(req.user.ID, { include: includes });
         const result: IUser = currentUser.toJSON();
         delete result.Hash;
         return res.json(result);
@@ -141,7 +141,7 @@ export class UserController {
         if (error != null) return res.status(400).json(error);
 
         const id = req.params.id;
-        const CurrentUser = await User.findById<User>(id);
+        const CurrentUser = await User.findByPk<User>(id);
         if (CurrentUser === null) {
             return res.status(404).json({ message: 'Такого пользователя нет'});
         }
@@ -206,7 +206,7 @@ export class UserController {
 
     private async delete(req: Request, res: Response) {
         const id = req.params.id;
-        const user = await User.findById<User>(id, {include: [ Subject ]});
+        const user = await User.findByPk<User>(id, {include: [ Subject ]});
         const list = await UserToSubject.findAll({where: { UserID: user.ID }});
         list.forEach(async i => await i.destroy());
         try {

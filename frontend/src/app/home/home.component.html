@@ -1,3 +1,106 @@
-<p>
-  home works!
-</p>
+<div class="actions">
+  <h1>Чем вы хотите заняться?</h1>
+  <div class="action_list">
+    <div class="action_link"
+      *ngIf="!user"
+      routerLink="/login"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Авторизация</h2>
+        <p>Получить больше доступа к системе.</p>
+      </div>
+    </div>
+    <div class="action_link"
+      *ngIf="user && (user.Role === 'admin' || user.Role === 'teacher')"
+      routerLink="/news-admin"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Новости и объявления</h2>
+        <p>Добавления, редактирование и удаление новостей и объявлений.</p>
+      </div>
+    </div>
+    <div class="action_link"
+      routerLink="/schedule"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Расписание</h2>
+        <p>Можно посмотреть расписание на неделю для любой группы.</p>
+      </div>
+    </div>
+    <div class="action_link"
+      *ngIf="user"
+      routerLink="/courses"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Список всех курсов</h2>
+        <p>Тут пожно найти и подписаться на нужный учебный курс.</p>
+      </div>
+    </div>
+    <div class="action_link"
+      *ngIf="user"
+      routerLink="/main"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Рабочий стол</h2>
+        <p>Тут проходит основная ваша работа.</p>
+      </div>
+    </div>
+    <div class="action_link"
+      *ngIf="user"
+      routerLink="/dialogs"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Диалоги</h2>
+        <p>Тут можно пообщатся с любым участником системы</p>
+      </div>
+    </div>
+    <div class="action_link"
+      *ngIf="user && (user.Role === 'admin' || user.Role === 'teacher')"
+      routerLink="/telegram"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}">
+      <img src="/assets/img/logo-64x64.png" alt="Logo">
+      <div class="action_link_info">
+        <h2>Вопросы из Telegram</h2>
+        <p>Можно даль ответы на вопросы, который студенты задают в telegram.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="news flex">
+  <h1>Общественная деятельность</h1>
+  <div class="list">
+    <div class="item item_news">
+      <h2>Новостная лента</h2>
+      <div class="item_detail">
+
+      </div>
+    </div>
+
+    <div class="item item_notes">
+      <h2>Доска объявлений</h2>
+      <div class="item_detail">
+
+      </div>
+    </div>
+
+    <div class="item item_schedule" *ngIf="user && user.Role === 'student'">
+        <h2>Расписание</h2>
+        <div class="item_detail">
+
+        </div>
+      </div>
+  </div>
+</div>

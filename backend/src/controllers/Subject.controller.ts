@@ -33,7 +33,7 @@ export class SubjectController {
             if (IDs === void 0) return res.status(204).json();
             IDs.forEach(async (id) => {
                 try {
-                    const Teacher = await User.findById<User>(id);
+                    const Teacher = await User.findByPk<User>(id);
                     if (Teacher !== void 0) {
                         const link = new UserToSubject({
                             UserID: Teacher.ID,
@@ -64,10 +64,14 @@ export class SubjectController {
 
     private async getList (req: Request, res: Response) {
         try {
-            const list = await Subject.findAll<Subject>({ include: [ User ]});
+            const list = await Subject.findAll<Subject>({ include: [
+                { model: User, as: 'Teachers'},
+                { model: User, as: 'Students'}
+            ]});
             const result = list.map(item => item.toJSON());
             return res.json(result);
         } catch (err) {
+            console.log(err);
             return res.status(500).json(err);
         }
     }
@@ -83,7 +87,7 @@ export class SubjectController {
 
         try {
             const id: string = req.params.id;
-            const subject = await Subject.findById<Subject>(id, {include: [ User ]});
+            const subject = await Subject.findByPk<Subject>(id, {include: [ User ]});
             if (!subject || subject === null) {
                 return res.status(404).json({ message: 'Такого предмета не существует'});
             }
@@ -104,7 +108,7 @@ export class SubjectController {
             });
             forAdd.forEach(async (id) => {
                 try {
-                    const Teacher = await User.findById<User>(id);
+                    const Teacher = await User.findByPk<User>(id);
                     if (Teacher !== void 0) {
                         const link = new UserToSubject({
                             UserID: Teacher.ID,
@@ -126,7 +130,7 @@ export class SubjectController {
 
     private async delete (req: Request, res: Response) {
         const id = req.params.id;
-        const subject = await Subject.findById<Subject>(id);
+        const subject = await Subject.findByPk<Subject>(id);
         try {
             await subject.destroy();
             return res.status(204).json();

@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     try {
       await this.userService.LogOut();
       this.user = null;
-      this.router.navigate(['/']);
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }

@@ -48,7 +48,7 @@ export class GroupController {
         }
     }
 
-    private async getList (req: Request, res: Response) {
+    private async getList(req: Request, res: Response) {
         try {
             const list = await Group.findAll<Group>();
             const result = list.map(item => item.toJSON());
@@ -69,7 +69,7 @@ export class GroupController {
 
         try {
             const id: string = req.params.id;
-            const group = await Group.findById<Group>(id);
+            const group = await Group.findByPk<Group>(id);
             if (!group || group === null) {
                 return res.status(404).json({ message: 'Такого предмета не существует'});
             }
@@ -83,7 +83,7 @@ export class GroupController {
 
     private async delete (req: Request, res: Response) {
         const id = req.params.id;
-        const group = await Group.findById<Group>(id, {include: [User, Lesson]});
+        const group = await Group.findByPk<Group>(id, {include: [User, Lesson]});
 
         // TODO: проверить SET NULL
         // group.Students.forEach(async (s: User) => {

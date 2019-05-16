@@ -37,6 +37,8 @@
     align-items: center;
     min-width: 300px;
 
+    @media @screen-tablet { display: none; }
+
     .header_user_info {
       display: flex;
       flex-direction: column;
@@ -73,7 +75,9 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: stretch;
-  height: 100%;
+  max-height: calc(100% - 88px);
+  height: calc(100% - 88px);
+  min-height: calc(100% - 88px);
 }
 
 .menu {
@@ -81,9 +85,11 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+  overflow: auto;
 
   background-color: @color-background;
-  padding: 4px;
+  padding: 8px 4px;
   margin: 4px;
   width: 80px;
   border-radius: 4px;
@@ -94,6 +100,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    flex-shrink: 0;
   }
 
   .menu_element {
@@ -101,6 +108,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 
     height: 64px;
     width: 64px;
@@ -132,9 +140,10 @@
   align-items: stretch;
 
   background-color: @color-background;
-  padding: 4px;
+  padding: 8px;
   margin: 4px;
   width: calc(100% - 80px);
+  overflow: auto;
   border-radius: 4px;
   border: 1px solid @color-primary;
 
