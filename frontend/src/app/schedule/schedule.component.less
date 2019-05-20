@@ -1,0 +1,123 @@
+@import '../../variable.less';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-shrink: 0;
+
+  height: 100%;
+  width: 100%;
+  min-width: 300px;
+  padding: 0px;
+}
+
+
+.group {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-shrink: 0;
+
+  span {
+    background-color: @color-primary;
+    color: @color-font-inverse;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 8px 44px 8px 20px;
+    position: relative;
+
+    &::before {
+      position: absolute;
+      content: url('/assets/img/arrow-down.svg');
+      right: 4px;
+    }
+  }
+}
+.table {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-shrink: 0;
+  overflow: auto;
+
+  margin-top: 16px;
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-shrink: 0;
+  }
+
+  .table_header {
+    border-top: 1px solid @color-primary;
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-shrink: 0;
+
+    height: 125px;
+    width: 250px;
+    border-right: 1px solid @color-primary;
+    border-bottom: 1px solid @color-primary;
+
+    &.cell_number {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      width: 24px;
+      border-left: 1px solid @color-primary;
+    }
+    &.table_header {
+      height: 24px;
+    }
+  }
+  .cell_value {
+    font-size: 12px;
+    padding: 4px;
+
+    &.even {
+      background-color: fade(#00ffff, 12%);
+    }
+    &.odd {
+      background-color: fade(#ff00ff, 12%);
+    }
+    &.base {
+      background-color: fade(#ffff00, 12%);
+    }
+  }
+}
+
+.colors {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-shrink: 0;
+  .even {
+    padding: 2px;
+    margin: 2px;
+    background-color: fade(#00ffff, 12%);
+  }
+  .odd {
+    padding: 2px;
+    margin: 2px;
+    background-color: fade(#ff00ff, 12%);
+  }
+  .base {
+    padding: 2px;
+    margin: 2px;
+    background-color: fade(#ffff00, 12%);
+  }
+}

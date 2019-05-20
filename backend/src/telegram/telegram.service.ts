@@ -21,13 +21,20 @@ export class TelegramService {
         socksUsername: TELEGRAM_CONFIG.proxy.login,
         socksPassword: TELEGRAM_CONFIG.proxy.psswd,
     });
+    private schedule: any[] = [
+        [null, {'even': '2-103 БЖ Тималина  Е.Ю.', 'odd': '2-109 РЯиКР Дасько А.А.', 'base': null}, {'even': null, 'odd': null, 'base': '4-403 Иностранный язык Гаспарян Г.С.'}, {'even': '1-118 БЕЗОПАСНОСТЬ ЖИЗНЕДЕЯТЕЛЬНОСТИ (БЖ) доцент   Тималина  Е.Ю.', 'odd': '1-118 РУССКИЙ  ЯЗЫК  И  КУЛЬТУРА  РЕЧИ (РЯиКР) доцент  Дасько А.А.', 'base': null}, null, null],
+        [{'even': null, 'odd': null, 'base': '1-118 МАТЕМАТИЧЕСКИЙ АНАЛИЗ (МА) доцент Копылова Т.В.'}, {'even': null, 'odd': null, 'base': '2-310 МА Копылова Т.В.'}, {'even': null, 'odd': null, 'base': '4-317 История Король М.П.'}, {'even': '1-122 ПРОГРАММИРОВАНИЕ НА ЯЗЫКЕ ВЫСОКОГО УРОВНЯ (ПЯВУ) доцент Сычев П.П.', 'odd': null, 'base': null}, null, null],
+        [null, {'even': '2-103 БЖ Тималина  Е.Ю.', 'odd': '2-109 РЯиКР Дасько А.А.', 'base': null}, {'even': null, 'odd': null, 'base': '4-403 Иностранный язык Гаспарян Г.С.'}, {'even': '1-118 БЕЗОПАСНОСТЬ ЖИЗНЕДЕЯТЕЛЬНОСТИ (БЖ) доцент   Тималина  Е.Ю.', 'odd': '1-118 РУССКИЙ  ЯЗЫК  И  КУЛЬТУРА  РЕЧИ (РЯиКР) доцент  Дасько А.А.', 'base': null}, null, null],
+        [{'even': null, 'odd': null, 'base': '1-118 МАТЕМАТИЧЕСКИЙ АНАЛИЗ (МА) доцент Копылова Т.В.'}, {'even': null, 'odd': null, 'base': '2-310 МА Копылова Т.В.'}, {'even': null, 'odd': null, 'base': '4-317 История Король М.П.'}, {'even': '1-122 ПРОГРАММИРОВАНИЕ НА ЯЗЫКЕ ВЫСОКОГО УРОВНЯ (ПЯВУ) доцент Сычев П.П.', 'odd': null, 'base': null}, null, null],
+        [null, {'even': '2-103 БЖ Тималина  Е.Ю.', 'odd': '2-109 РЯиКР Дасько А.А.', 'base': null}, {'even': null, 'odd': null, 'base': '4-403 Иностранный язык Гаспарян Г.С.'}, {'even': '1-118 БЕЗОПАСНОСТЬ ЖИЗНЕДЕЯТЕЛЬНОСТИ (БЖ) доцент   Тималина  Е.Ю.', 'odd': '1-118 РУССКИЙ  ЯЗЫК  И  КУЛЬТУРА  РЕЧИ (РЯиКР) доцент  Дасько А.А.', 'base': null}, null, null],
+        [{'even': null, 'odd': null, 'base': '1-118 МАТЕМАТИЧЕСКИЙ АНАЛИЗ (МА) доцент Копылова Т.В.'}, {'even': null, 'odd': null, 'base': '2-310 МА Копылова Т.В.'}, {'even': null, 'odd': null, 'base': '4-317 История Король М.П.'}, {'even': '1-122 ПРОГРАММИРОВАНИЕ НА ЯЗЫКЕ ВЫСОКОГО УРОВНЯ (ПЯВУ) доцент Сычев П.П.', 'odd': null, 'base': null}, null, null]
+    ];
 
     constructor() {
         const config = TELEGRAM_CONFIG.needProxy ? { telegram: { agent: this.socksAgent } } : {};
         this.bot = new Telegraf(TELEGRAM_CONFIG.apiToken, config);
         this.init();
         (this.bot as any).catch((err: any) => {
-            // console.log('Ooops', err);
             Sentry.captureException(err);
         });
         this.bot.startPolling();
@@ -52,7 +59,6 @@ export class TelegramService {
         this.bot.on('sticker', (ctx) => ctx.reply('👍'));
 
         this.commandHandler();
-        this.actionHandler();
         this.hearsHandler();
     }
 
@@ -69,20 +75,23 @@ export class TelegramService {
 Но это не самое главное.
 
 Список команд:
-1) /sign_up [Login]:[Password]
-2) /any_command
-2) /test
+1) /login [Login]:[Password]
+1) /logout
+2) /getinfo
+3) /test
 `);
     }
 
     private commandHandler() {
-        this.bot.command('sign_up', (ctx) => this.sign_up(ctx));
-        this.bot.command('any_command', (ctx) => this.any_command(ctx));
+        this.bot.command('signup', (ctx) => this.sign_up(ctx));
+        this.bot.command('login', (ctx) => this.log_in(ctx));
+        this.bot.command('logout', (ctx) => this.log_out(ctx));
+        this.bot.command('getinfo', (ctx) => this.get_info(ctx));
         this.bot.command('test', (ctx) => this.test(ctx));
     }
 
     private async sign_up(ctx: ContextMessageUpdate) {
-        const msg = /\/sign_up (.*)/.exec(ctx.message.text);
+        const msg = /\/signup (.*)/.exec(ctx.message.text);
 
         try {
             const Login = msg[1].split(':')[0];
@@ -115,41 +124,148 @@ export class TelegramService {
 Пароль: ${_Password}
 `);
         } catch (err) {
+            console.log(err);
             return ctx.reply(`Произошла ошибка!`);
         }
     }
 
-    private async any_command(ctx: ContextMessageUpdate) {
-        const user: any = null; // await User.find<User>({ where: { 'ChatID': ctx.chat.id } });
-        if (user) {
-            (ctx as any).session.user = user.toJSON();
-            return ctx.reply('В данный момент отсутствуют турниры, в которые производиться набор участников');
-
-        } else {
-            return ctx.reply('Пожалуйста зарегистрируйтесь, как участник турниров с помощью команды /check_in [BattleTag]:[Password]');
+    private async get_info(ctx: ContextMessageUpdate) {
+        try {
+            const user: User = await User.findOne<User>({ where: { 'TelegramID': ctx.chat.id } });
+            if (user) {
+                const Login = user.Login ? user.Login : '';
+                const FIO = user.FIO ? user.FIO : '';
+                const Role = user.Role ? user.Role : '';
+                const GroupID = user.GroupID ? user.GroupID : '';
+                return ctx.reply(`
+Логин: ${Login}
+ФИО: ${FIO}
+Роль: ${Role}
+Номер группы: ${GroupID}`);
+            } else {
+                return ctx.reply('Пожалуйста авторизуйтесь, как /login [Login]:[Password]');
+            }
+        } catch (err) {
+            console.log(err);
+            return ctx.reply(`Произошла ошибка!`);
         }
     }
+    private async log_in(ctx: ContextMessageUpdate) {
+        let user: User = await User.findOne<User>({ where: { 'TelegramID': ctx.chat.id } });
+        if (user) {
+            return ctx.reply(`Вы уже авторизованы, как ${user.FIO}.`);
+        }
+
+        const msg = /\/login (.*)/.exec(ctx.message.text);
+        try {
+            if (msg) {
+                const Login = msg[1].split(':')[0];
+                const Password = msg[1].split(':')[1];
+                user =  await User.findOne<User>({ where: { Login: Login } });
+                if (!user) {
+                    return ctx.reply('Некорректный логин');
+                }
+                if (!passwordHash.verify(Password, user.Hash)) {
+                    return ctx.reply('Некорректный пароль');
+                }
+                user.TelegramID = ctx.chat.id;
+                await user.save();
+                return ctx.reply(`Доброго времени суток, ${user.FIO}!`);
+            } else {
+                return ctx.reply(`Логин и пароль отсутствуют!`);
+            }
+        } catch (err) {
+            console.log(err);
+            return ctx.reply(`Произошла ошибка!`);
+        }
+    }
+    private async log_out(ctx: ContextMessageUpdate) {
+        try {
+            const user: User = await User.findOne<User>({ where: { 'TelegramID': ctx.chat.id } });
+            if (user) {
+                user.TelegramID = null;
+                await user.save();
+                return ctx.reply(`До свидания!`);
+            } else {
+                return ctx.reply(`Вы не авторизованы!`);
+            }
+        } catch (err) {
+            console.log(err);
+            return ctx.reply(`Произошла ошибка!`);
+        }
+    }
+
     private async test(ctx: ContextMessageUpdate) {
-        const users = await User.findAll<User>();
-        console.log(users);
-        return ctx.reply(`TEST: ${users.length}`);
-    }
-
-    private actionHandler() {
-        (this.bot as any).action(/(any|some):select:(.*)/, (ctx: ContextMessageUpdate) => this.select(ctx));
-    }
-
-    private async select(ctx: ContextMessageUpdate) {
-        const match = (ctx as any).match;
-        return ctx.reply(`Select! ${match[1]}`);
+        try {
+            const user: User = await User.findOne<User>({ where: { 'TelegramID': ctx.chat.id } });
+            if (user) {
+                return ctx.reply(`TEST для авторизованного: ${user.FIO}`);
+            } else {
+                const users = await User.findAll<User>();
+                return ctx.reply(`TEST для не авторизованного: Всего пользователей ${users.length}`);
+            }
+        } catch (err) {
+            console.log(err);
+            return ctx.reply(`Произошла ошибка!`);
+        }
     }
 
     private hearsHandler() {
-        this.bot.hears(/[П,п]ривет/i, (ctx) => ctx.reply('Приветствую тебя'));
-        this.bot.hears(/(.*) [П,п]ока (.*)/i, (ctx) => {
-            // console.log((ctx as any).match);
-            return ctx.reply('Пока пока');
-        });
+        this.bot.hears(/(.*)расписание(.*)/i, (ctx) => this.get_schedule(ctx));
+        this.bot.hears(/(.*)[З,з]адани[е,я,й](.*)/i, (ctx) => ctx.reply(`Все задания выполнены!`));
+    }
+
+    private async get_schedule(ctx: ContextMessageUpdate) {
+        let indexOfDay = new Date().getDay();
+        try {
+            const time = [ '09:00 - 10:30', '10:40 - 12:10', '12:50 - 14:20', '14:30 - 16:00', '16:10 - 17:40', '17:50 - 19:20'];
+            const week = [ '', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье' ];
+            let dayWeek = /([П,п]онедельник|[В,в]торник|[С,с]реда|[Ч,ч]етверг|[П,п]ятница|[С,с]уббота|[В,в]оскресенье)/.exec(ctx.message.text);
+            if (dayWeek && dayWeek.length > 0) {
+                let curentDay = week.find(day =>  day.toLocaleLowerCase() === dayWeek[0].toLocaleLowerCase());
+                let index = week.indexOf(curentDay);
+                if (index > -1) {
+                    indexOfDay = index;
+                }
+            }
+            if (indexOfDay === 7) {
+                return ctx.reply(`В воскресенье нет занятий!`);
+            }
+            const user: User = await User.findOne<User>({ where: { 'TelegramID': ctx.chat.id } });
+            if (user) {
+                let curSchedule: any[] = this.schedule[indexOfDay];
+                return ctx.reply(curSchedule.reduce(
+                    (prev, val, index) => {
+                        let msg = `
+Пара № ${(index + 1)} (${time[index]}): `;
+                        if (!val) {
+                            msg += `Окно`;
+                        } else {
+                            if (val.even) {
+                                msg += `
+\*По чётным неделям\*: ${val.even}`;
+                            }
+                            if (val.odd) {
+                                msg += `
+По нечётным неделям: ${val.odd}`;
+                            }
+                            if (val.base) {
+                                msg += `
+Каждую неделю: ${val.base}`;
+                            }
+                        }
+                        return prev + msg + `
+`;
+                    }, `${week[indexOfDay]}
+`
+                ));
+            } else {
+                return ctx.reply(`Вы не авторизованы!`);
+            }
+        } catch (err) {
+            console.log(err);
+            return ctx.reply(`Произошла ошибка!`);
+        }
     }
 
     private generatePassword() {

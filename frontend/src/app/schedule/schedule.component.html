@@ -1,3 +1,29 @@
-<p>
-  schedule works!
-</p>
+<div class="group">
+  <span>
+    Группа 1011
+  </span>
+</div>
+<div class="table">
+  <div class="column column_number">
+    <div class="cell table_header cell_number">№</div>
+    <div class="cell table_body cell_number">1</div>
+    <div class="cell table_body cell_number">2</div>
+    <div class="cell table_body cell_number">3</div>
+    <div class="cell table_body cell_number">4</div>
+    <div class="cell table_body cell_number">5</div>
+    <div class="cell table_body cell_number">6</div>
+  </div>
+  <div class="column" *ngFor="let list of schedule; let i = index">
+    <div class="cell table_header">{{week[i]}}</div>
+    <div class="cell table_body" *ngFor="let item of list">
+      <div *ngIf="item && item.even" class="cell_value even flex">{{item.even}}</div>
+      <div *ngIf="item && item.odd" class="cell_value odd flex">{{item.odd}}</div>
+      <div *ngIf="item && item.base" class="cell_value base flex">{{item.base}}</div>
+    </div>
+  </div>
+</div>
+<div class="colors">
+  <div class="even">чётная</div>
+  <div class="odd">нечётная</div>
+  <div class="base">всегда</div>
+</div>
