@@ -29,52 +29,58 @@
         routerLink="/"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
-        home
+        <img src="/assets/icons/home.png" width="64" height="64" alt="image format png" />
       </div>
       <div class="menu_element"
         *ngIf="user && (user.Role === 'admin' || user.Role === 'teacher')"
         routerLink="/news-admin"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
-        news-admin
+        <!-- news-admin -->
+        <img src="/assets/icons/news.png" width="64" height="64" alt="image format png" />
       </div>
       <div class="menu_element"
         routerLink="/schedule"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
-        schedule
+        <!-- schedule -->
+        <img src="/assets/icons/schedule.png" width="64" height="64" alt="image format png" />
       </div>
       <div class="menu_element"
         *ngIf="user"
         routerLink="/courses"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
-        courses
+        <!-- courses -->
+        <img src="/assets/icons/subjects.png" width="64" height="64" alt="image format png" />
       </div>
       <div class="menu_element"
         *ngIf="user"
         routerLink="/main"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{exact: true}">
-        main
+        routerLinkActive="active" >
+        <!-- main -->
+        <img src="/assets/icons/workspace.png" width="64" height="64" alt="image format png" />
       </div>
       <div class="menu_element"
         *ngIf="user"
         routerLink="/dialogs"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
-        dialogs
+        <!-- dialogs -->
+        <img src="/assets/icons/dialogs.png" width="64" height="64" alt="image format png" />
       </div>
       <div class="menu_element"
         *ngIf="user && (user.Role === 'admin' || user.Role === 'teacher')"
         routerLink="/telegram"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: true}">
-        telegram
+        <!-- telegram -->
+        <img src="/assets/icons/telegram.png" width="64" height="64" alt="image format png" />
       </div>
     </div>
     <div class="menu_element menu_element__logout" (click)="LogOut()" *ngIf="user">
-      logout
+      <!-- logout -->
+      <img src="/assets/icons/exit.png" width="32" height="32" alt="image format png" />
     </div>
   </div>
   <div class="body" [class.body_auth]="isAuth">
